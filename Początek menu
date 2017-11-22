@@ -1,0 +1,118 @@
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_native_dialog.h>
+#include <allegro5/allegro_ttf.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_primitives.h>
+#include <iostream>
+
+/*
+* Title     : Wieza
+* Developer : Patryk Hamerlik
+* Studio	: Why it's looking like autistic pocket monster?
+*/
+
+const int SCREEN_W = 640;
+const int SCREEN_H = 480;
+
+
+int main()
+{
+
+	if (!al_init()) {
+		al_show_native_message_box(NULL,NULL,NULL, "Failed to initialize allegro!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+		return -1;
+	}
+
+	al_set_new_display_flags(ALLEGRO_WINDOWED);
+	ALLEGRO_DISPLAY *display = al_create_display(SCREEN_W, SCREEN_H);
+	al_set_window_position(display, 200, 100);
+	al_set_window_title(display, "Wieza");
+	
+	if (!display) 
+	{
+		al_show_native_message_box(display, "title", "settings", "Failed to initialize display!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+		return -1;
+	}
+
+	al_init_primitives_addon();
+	al_install_keyboard();
+
+	ALLEGRO_COLOR electricBlue = al_map_rgb(44, 117, 255);
+
+	//al_draw_filled_triangle(160, 120, 180, 120, 170, 140,  al_map_rgb(255, 0, 0 ));
+	
+	ALLEGRO_EVENT_QUEUE *event_queue = al_create_event_queue();
+
+	al_register_event_source(event_queue, al_get_keyboard_event_source());
+
+	bool done = false;
+	int x = 10, y = 10;
+	int moveSpeed = 5;
+
+	int state = NULL;
+
+
+
+#pragma region fonts
+	al_init_font_addon();
+	al_init_ttf_addon();
+
+
+
+	ALLEGRO_FONT *fontStrTyt = al_load_font("8bitoperator_jve.ttf", 36, NULL);
+	ALLEGRO_FONT *fontTytul = al_load_font("8bitoperator_jve.ttf", 50, NULL);
+	ALLEGRO_FONT *fontMenu = al_load_font("8bitoperator_jve.ttf", 30, NULL);
+
+	if (!fontStrTyt) {
+		al_show_native_message_box(NULL, NULL, NULL, "Failed to load front page!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+		return -1;
+	}
+	if (!fontTytul) {
+		al_show_native_message_box(NULL, NULL, NULL, "Failed to load title page!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+		return -1;
+	}
+	if (!fontMenu) {
+		al_show_native_message_box(NULL, NULL, NULL, "Failed to load menu!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+		return -1;
+	}
+
+	al_clear_to_color (al_map_rgb (0, 0, 0));
+
+	al_draw_text(fontStrTyt, al_map_rgb(255, 255, 0), SCREEN_W / 2, 0, ALLEGRO_ALIGN_CENTRE, "Patiboy Games przedstawia:");
+	al_draw_text(fontTytul, al_map_rgb(139, 0, 0), SCREEN_W / 2, (SCREEN_H / 2 - 180), ALLEGRO_ALIGN_CENTRE, "WIEZA");
+	al_draw_text(fontMenu, al_map_rgb(128, 128, 0), SCREEN_W / 2, (SCREEN_H / 2) - 100, ALLEGRO_ALIGN_CENTRE, "NOWA GRA");
+	al_draw_text(fontMenu, al_map_rgb(128, 128, 0), SCREEN_W / 2, (SCREEN_H / 2) - 70, ALLEGRO_ALIGN_CENTRE, "WCZYTAJ POZIOM");
+	al_draw_text(fontMenu, al_map_rgb(128, 128, 0), SCREEN_W / 2, (SCREEN_H / 2) - 40, ALLEGRO_ALIGN_CENTRE, "AUTORZY");
+	al_draw_text(fontMenu, al_map_rgb(128, 128, 0), SCREEN_W / 2, (SCREEN_H / 2) - 10, ALLEGRO_ALIGN_CENTRE, "WYJSCIE");
+	
+	//al_draw_bitmap();
+	
+	//al_destroy_bitmap;
+
+	
+
+
+	//ALLEGRO_FONT *font2 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
+	//al_draw_text(font, al_map_rgb(128, 128, 0), SCREEN_W / 2, (SCREEN_H / 2) - 36, ALLEGRO_ALIGN_CENTRE, "NOWA GRA '\n' WCZYTAJ POZIOM '\n' AUTORZY '\n' WYJŚCIE" );
+
+	//ALLEGRO_FONT *font3 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
+	//al_draw_text(font, al_map_rgb(128, 128, 0), SCREEN_W / 2, (SCREEN_H / 2) - 36, ALLEGRO_ALIGN_CENTRE, "NOWA GRA '\n' WCZYTAJ POZIOM '\n' AUTORZY '\n' WYJŚCIE");
+
+	//ALLEGRO_FONT *font3 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
+	//al_draw_text(font, al_map_rgb(128, 128, 0), SCREEN_W / 2, (SCREEN_H / 2) - 36, ALLEGRO_ALIGN_CENTRE, "NOWA GRA '\n' WCZYTAJ POZIOM '\n' AUTORZY '\n' WYJŚCIE");
+
+	//ALLEGRO_FONT *font4 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
+	//al_draw_text(font, al_map_rgb(128, 128, 0), SCREEN_W / 2, (SCREEN_H / 2) - 36, ALLEGRO_ALIGN_CENTRE, "NOWA GRA '\n' WCZYTAJ POZIOM '\n' AUTORZY '\n' WYJŚCIE");
+	
+#pragma endregion
+
+	al_flip_display();
+	al_rest(10.0);
+	al_destroy_font(fontStrTyt);
+	al_destroy_font(fontTytul);
+	al_destroy_font(fontMenu);
+	al_destroy_display(display);
+	
+	return 0;	
+	}
+  ////main menu starting some keyboard option
