@@ -1,0 +1,191 @@
+#include <allegro5/allegro.h>
+#include <allegro5/allegro_native_dialog.h>
+#include <allegro5/allegro_ttf.h>
+#include <allegro5/allegro_font.h>
+#include <allegro5/allegro_primitives.h>
+#include <iostream>
+#include <stdio.h>
+#include <windows.h>
+/*
+* Title     : Wieza
+* Developer : Patryk Hamerlik
+* Studio	: Why it's looking like autistic pocket monster?
+*/
+
+const int SCREEN_W = 640;
+const int SCREEN_H = 480;
+//const float FPS = 60;
+//FILE *fabula;
+
+int main()
+{
+
+	if (!al_init()) 
+	{
+		al_show_native_message_box(NULL,NULL,NULL, "Failed to initialize allegro!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+		return -1;
+	}
+
+	al_set_new_display_flags(ALLEGRO_WINDOWED);
+	ALLEGRO_DISPLAY *display = al_create_display(SCREEN_W, SCREEN_H);
+	al_set_window_position(display, 200, 100);
+	al_set_window_title(display, "Wieza");
+	
+	if (!display) 
+	{
+		al_show_native_message_box(display, "title", "settings", "Failed to initialize display!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+		return -1;
+	}
+	//ALLEGRO_TIMER *timer = NULL;
+
+	//timer = al_create_timer(1.0 / FPS);
+	//if (!timer) {
+	//	al_show_native_message_box(display, "title", "settings", "Failed to initialize timer!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+	//	al_destroy_display(display);
+	//	return -1;
+	//}
+
+	//ALLEGRO_EVENT_QUEUE *event_queue = NULL;
+	//bool redraw = true;
+
+	//event_queue = al_create_event_queue();
+	//if (!event_queue) {
+	//	al_show_native_message_box(display, "title", "settings", "Failed to initialize events!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+	//	al_destroy_display(display);
+	//	al_destroy_timer(timer);
+	//	return -1;
+	//}
+
+	//al_register_event_source(event_queue, al_get_display_event_source(display));
+	//al_register_event_source(event_queue, al_get_timer_event_source(timer));
+	//al_flip_display();
+	//al_start_timer(timer);
+
+//	al_init_primitives_addon();
+//	al_install_keyboard();
+
+
+	// ALLEGRO_COLOR electricBlue = al_map_rgb(44, 117, 255);
+
+	//al_draw_filled_triangle(160, 120, 180, 120, 170, 140,  al_map_rgb(255, 0, 0 ));
+	
+	//ALLEGRO_EVENT_QUEUE *event_queue = al_create_event_queue();
+
+	//al_register_event_source(event_queue, al_get_keyboard_event_source());
+
+	//bool done = false;
+	//int x = 10, y = 10;
+	//int moveSpeed = 5;
+
+	//int state = NULL;
+
+#pragma region fonts
+	al_init_font_addon();
+	al_init_ttf_addon();
+	
+
+	/*
+	/ALLEGRO_FONT *fontStrTyt = al_load_font("8bitoperator_jve.ttf", 36, NULL); //fonty menu
+	/ALLEGRO_FONT *fontTytul = al_load_font("8bitoperator_jve.ttf", 50, NULL); 
+	/ALLEGRO_FONT *fontMenu = al_load_font("8bitoperator_jve.ttf", 30, NULL);
+	/ALLEGRO_FONT *fontAutorzy = al_load_font("8bitoperator_jve.ttf", 36, NULL);
+	
+
+	/if (!fontStrTyt)
+	/{
+	/	al_show_native_message_box(NULL, NULL, NULL, "Failed to load front page!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+		return -1;
+	}
+	if (!fontTytul)
+	{
+		al_show_native_message_box(NULL, NULL, NULL, "Failed to load title page!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+		return -1;
+	}
+	if (!fontMenu)
+	{
+		al_show_native_message_box(NULL, NULL, NULL, "Failed to load menu!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+		return -1;
+	}*/
+/*
+	while (1)
+	{
+		ALLEGRO_EVENT ev;
+		al_wait_for_event(event_queue, &ev);
+
+		if (ev.type == ALLEGRO_EVENT_TIMER) {
+			redraw = true;
+		}
+		else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
+			break;
+		}
+
+		if (redraw && al_is_event_queue_empty(event_queue)) {
+			redraw = false;
+			al_clear_to_color(al_map_rgb(0, 0, 0));
+			al_flip_display();
+		}
+	}
+
+*/
+	/*
+	al_clear_to_color (al_map_rgb (0, 0, 0));
+
+	al_draw_textf(fontStrTyt, al_map_rgb(255, 255, 0), SCREEN_W / 2, 0, ALLEGRO_ALIGN_CENTRE, "Patiboy Games przedstawia:");
+	//if (al_time == 3)
+	//{                            do zmian
+	al_draw_textf(fontTytul, al_map_rgb(139, 0, 0), SCREEN_W / 2, (SCREEN_H / 2 - 180), ALLEGRO_ALIGN_CENTRE, "WIEZA");
+	//}
+	al_draw_textf(fontTytul, al_map_rgb(139, 0, 0), SCREEN_W / 2, (SCREEN_H / 2 - 180), ALLEGRO_ALIGN_CENTRE, "WIEZA");
+	al_draw_multiline_textf(fontMenu, al_map_rgb(128, 128, 0), SCREEN_W / 2, (SCREEN_H / 2) - 100, 100, 40, ALLEGRO_ALIGN_CENTRE, "NOWA GRA  WCZYTAJ  POZIOM  AUTORZY  WYJSCIE" );
+	*/
+
+	ALLEGRO_FONT *fontAutorzy = al_load_font("8bitoperator_jve.ttf", 40, NULL);
+	//ALLEGRO_FONT *fontWczytywaniePoziomu = al_load_font("8bitoperator_jve.ttf", 40, NULL);
+	//ALLEGRO_FONT *fontOknoTekstowe = al_load_font("8bitoperator_jve.ttf", 20, NULL);
+
+	al_draw_multiline_textf(fontAutorzy, al_map_rgb(255, 220, 0), SCREEN_W / 2, (SCREEN_H / 2 - 180),500,500, ALLEGRO_ALIGN_CENTRE, "Twórcą gry jest /n Patryk Hamerlik");
+
+	//al_draw_textf(fontWczytywaniePoziomu, al_map_rgb(161, 101, 0), SCREEN_W / 2, (SCREEN_H / 2 - 180), ALLEGRO_ALIGN_CENTRE, "Aby wczytać poziom wpis podany kod");
+
+	//al_draw_multiline_textf(fontOknoTekstowe, al_map_rgb(255, 255, 255), SCREEN_W / 2, (SCREEN_H / 2 - 180),640,20, ALLEGRO_ALIGN_CENTRE,(&fabula, "fabula.txt"));
+	//
+
+//	void al_draw_multiline_textf(const ALLEGRO_FONT *fontMenu,
+	//	ALLEGRO_COLOR color, float x, float y, float max_width, float line_height,
+	//	int flags, const char *format, ...)
+
+
+	//al_draw_bitmap();
+	
+	//al_destroy_bitmap;
+
+	
+
+
+	//ALLEGRO_FONT *font2 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
+	//al_draw_text(font, al_map_rgb(128, 128, 0), SCREEN_W / 2, (SCREEN_H / 2) - 36, ALLEGRO_ALIGN_CENTRE, "NOWA GRA '\n' WCZYTAJ POZIOM '\n' AUTORZY '\n' WYJŚCIE" );
+
+	//ALLEGRO_FONT *font3 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
+	//al_draw_text(font, al_map_rgb(128, 128, 0), SCREEN_W / 2, (SCREEN_H / 2) - 36, ALLEGRO_ALIGN_CENTRE, "NOWA GRA '\n' WCZYTAJ POZIOM '\n' AUTORZY '\n' WYJŚCIE");
+
+	//ALLEGRO_FONT *font3 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
+	//al_draw_text(font, al_map_rgb(128, 128, 0), SCREEN_W / 2, (SCREEN_H / 2) - 36, ALLEGRO_ALIGN_CENTRE, "NOWA GRA '\n' WCZYTAJ POZIOM '\n' AUTORZY '\n' WYJŚCIE");
+
+	//ALLEGRO_FONT *font4 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
+	//al_draw_text(font, al_map_rgb(128, 128, 0), SCREEN_W / 2, (SCREEN_H / 2) - 36, ALLEGRO_ALIGN_CENTRE, "NOWA GRA '\n' WCZYTAJ POZIOM '\n' AUTORZY '\n' WYJŚCIE");
+	
+#pragma endregion
+
+	al_flip_display();
+	al_rest(10.0);
+	//al_destroy_font(fontStrTyt);
+	//al_destroy_font(fontTytul);
+	//al_destroy_font(fontMenu);
+	al_destroy_font(fontAutorzy);
+	//al_destroy_font(fontWczytywaniePoziomu);
+	//al_destroy_font(fontOknoTekstowe);
+	//al_destroy_timer(timer);
+	al_destroy_display(display);
+	
+	return 0;	
+	}
