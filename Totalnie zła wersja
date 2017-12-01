@@ -6,15 +6,15 @@
 #include <iostream>
 #include <stdio.h>
 #include <windows.h>
-#include <fstream>
+
 /*
 * Title     : Wieza
 * Developer : Patryk Hamerlik
 * Studio	: Why it's looking like autistic pocket monster?
 */
 
-const int SCREEN_W = 1280;
-const int SCREEN_H = 1024;
+const int SCREEN_W = 640;
+const int SCREEN_H = 480;
 //const float FPS = 60;
 //FILE *fabula;
 
@@ -31,7 +31,7 @@ int main()
 	ALLEGRO_DISPLAY *display = al_create_display(SCREEN_W, SCREEN_H);
 	al_set_window_position(display, 200, 100);
 	al_set_window_title(display, "Wieza");
-	
+
 	if (!display)
 	{
 		al_show_native_message_box(display, "title", "settings", "Failed to initialize display!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
@@ -90,6 +90,7 @@ int main()
 	/ALLEGRO_FONT *fontMenu = al_load_font("8bitoperator_jve.ttf", 30, NULL);
 	/ALLEGRO_FONT *fontAutorzy = al_load_font("8bitoperator_jve.ttf", 36, NULL);
 
+	
 
 	/if (!fontStrTyt)
 	/{
@@ -141,16 +142,25 @@ int main()
 
 	///ALLEGRO_FONT *fontAutorzy = al_load_font("8bitoperator_jve.ttf", 40, NULL);
 	///ALLEGRO_FONT *fontWczytywaniePoziomu = al_load_font("8bitoperator_jve.ttf", 40, NULL);
-	ALLEGRO_FONT *fontOknoTekstowe = al_load_font("8bitoperator_jve.ttf", 20, NULL);
-	ALLEGRO_FILE *al_fopen(const char(&fabula, "fabula.txt") const char *r);
+	//ALLEGRO_FONT *fontOknoTekstowe1 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
+	//ALLEGRO_FONT *fontOknoTekstowe2 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
+	//ALLEGRO_FONT *fontOknoTekstowe3 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
+	//ALLEGRO_FONT *fontOknoTekstowe4 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
+	//ALLEGRO_FONT *fontOknoTekstowe5 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
 
-	///al_draw_multiline_textf(fontAutorzy, al_map_rgb(255, 220, 0), SCREEN_W / 2, (SCREEN_H / 2 - 180), SCREEN_W , 50, ALLEGRO_ALIGN_CENTRE, "Tworca gry jest \n Patryk Hamerlik");
+
+	//al_draw_multiline_textf(fontAutorzy, al_map_rgb(255, 220, 0), SCREEN_W / 2, (SCREEN_H / 2 - 180), 640 , 50, ALLEGRO_ALIGN_CENTRE, "Tworca gry jest \n Patryk Hamerlik");
 
 	///al_draw_multiline_textf(fontWczytywaniePoziomu, al_map_rgb(161, 101, 0), SCREEN_W / 2, (SCREEN_H / 2 - 180),SCREEN_W, 60, ALLEGRO_ALIGN_CENTRE, "Aby wczytac poziom wpisz podany kod \n _ _ _ _");
+	//al_draw_multiline_textf(fontOknoTekstowe1, al_map_rgb(255, 255, 255), SCREEN_W / 2, (SCREEN_H / 2 - 180), 640, 20, ALLEGRO_ALIGN_CENTRE, "...Nie ma go...");
+	//al_draw_multiline_textf(fontOknoTekstowe2, al_map_rgb(255, 255, 255), SCREEN_W / 2, (SCREEN_H / 2 - 180), 640, 20, ALLEGRO_ALIGN_CENTRE, "...znowu cie okradli...");
+	//al_draw_multiline_textf(fontOknoTekstowe3, al_map_rgb(255, 255, 255), SCREEN_W / 2, (SCREEN_H / 2 - 180), 640, 20, ALLEGRO_ALIGN_CENTRE, "...zlym pomysłem było pić w tej przeklętej karczmie...");
+	//al_draw_multiline_textf(fontOknoTekstowe4, al_map_rgb(255, 255, 255), SCREEN_W / 2, (SCREEN_H / 2 - 180), 640, 20, ALLEGRO_ALIGN_CENTRE, "....nie ma juz sensu go szukać..."); 
+	//al_draw_multiline_textf(fontOknoTekstowe5, al_map_rgb(255, 255, 255), SCREEN_W / 2, (SCREEN_H / 2 - 180), 640, 20, ALLEGRO_ALIGN_CENTRE, "... dobrze wiesz gdzie go zabrali......."); //następnie włącza się tutorial
 
-	al_draw_multiline_textf(fontOknoTekstowe, al_map_rgb(255, 255, 255), SCREEN_W / 2, (SCREEN_H / 2 - 180),640,20, ALLEGRO_ALIGN_CENTRE,(&fabula, "fabula.txt"));
-	ifstream plik;
-	plik.open("lab.txt");
+		
+	//ifstream plik;
+	//plik.open("lab.txt");
 	//
 
 	//	void al_draw_multiline_textf(const ALLEGRO_FONT *fontMenu,
@@ -184,9 +194,13 @@ int main()
 	//al_destroy_font(fontStrTyt);
 	//al_destroy_font(fontTytul);
 	//al_destroy_font(fontMenu);
-	///al_destroy_font(fontAutorzy);
+	//al_destroy_font(fontAutorzy);
 	///al_destroy_font(fontWczytywaniePoziomu);
-	al_destroy_font(fontOknoTekstowe);
+	//al_destroy_font(fontOknoTekstowe1);
+	///al_destroy_font(fontOknoTekstowe2);
+	//al_destroy_font(fontOknoTekstowe3);
+	//al_destroy_font(fontOknoTekstowe4);
+	//al_destroy_font(fontOknoTekstowe5);
 	//al_destroy_timer(timer);
 	al_destroy_display(display);
 
