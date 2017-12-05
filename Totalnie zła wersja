@@ -1,8 +1,9 @@
-#include <allegro5/allegro.h>
-#include <allegro5/allegro_native_dialog.h>
-#include <allegro5/allegro_ttf.h>
-#include <allegro5/allegro_font.h>
-#include <allegro5/allegro_primitives.h>
+#include <allegro5\allegro.h>
+#include <allegro5\allegro_native_dialog.h>
+#include <allegro5\allegro_ttf.h>
+#include <allegro5\allegro_font.h>
+#include <allegro5\allegro_primitives.h>
+#include <allegro5\allegro_image.h>
 #include <iostream>
 #include <stdio.h>
 #include <windows.h>
@@ -37,33 +38,33 @@ int main()
 		al_show_native_message_box(display, "title", "settings", "Failed to initialize display!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
 		return -1;
 	}
-	//ALLEGRO_TIMER *timer = NULL;
+	ALLEGRO_TIMER *timer = NULL;
 
-	//timer = al_create_timer(1.0 / FPS);
-	//if (!timer) {
-	//	al_show_native_message_box(display, "title", "settings", "Failed to initialize timer!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
-	//	al_destroy_display(display);
-	//	return -1;
-	//}
+	timer = al_create_timer(1.0 / FPS);
+	if (!timer) {
+	al_show_native_message_box(display, "title", "settings", "Failed to initialize timer!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+		al_destroy_display(display);
+		return -1;
+	}
 
-	//ALLEGRO_EVENT_QUEUE *event_queue = NULL;
-	//bool redraw = true;
+	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
+	bool redraw = true;
 
-	//event_queue = al_create_event_queue();
-	//if (!event_queue) {
-	//	al_show_native_message_box(display, "title", "settings", "Failed to initialize events!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
-	//	al_destroy_display(display);
-	//	al_destroy_timer(timer);
-	//	return -1;
-	//}
+	event_queue = al_create_event_queue();
+	if (!event_queue) {
+		al_show_native_message_box(display, "title", "settings", "Failed to initialize events!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+		al_destroy_display(display);
+		al_destroy_timer(timer);
+		return -1;
+	}
 
-	//al_register_event_source(event_queue, al_get_display_event_source(display));
-	//al_register_event_source(event_queue, al_get_timer_event_source(timer));
-	//al_flip_display();
-	//al_start_timer(timer);
+	al_register_event_source(event_queue, al_get_display_event_source(display));
+	al_register_event_source(event_queue, al_get_timer_event_source(timer));
+	al_flip_display();
+	al_start_timer(timer);
 
 	//	al_init_primitives_addon();
-	//	al_install_keyboard();
+	//al_install_keyboard();
 
 
 	// ALLEGRO_COLOR electricBlue = al_map_rgb(44, 117, 255);
@@ -80,10 +81,32 @@ int main()
 
 	//int state = NULL;
 
-#pragma region fonts
+	al_init_image_addon();
+
+
+	ALLEGRO_BITMAP *nowagra = al_load_bitmap("nowagra.png");
+	ALLEGRO_BITMAP *wczytajgre = al_load_bitmap("wczytajgre.png");
+	ALLEGRO_BITMAP *autorzy = al_load_bitmap("autorzy.png");
+	ALLEGRO_BITMAP *wyjscie = al_load_bitmap("wyjscie.png"); 
+	ALLEGRO_BITMAP *wskaznik = al_load_bitmap("wskaznik.png");
+
+
 	al_init_font_addon();
 	al_init_ttf_addon();
 
+
+
+
+	al_draw_bitmap(nowagra, SCREEN_W / 2, (SCREEN_H / 2) - 100, NULL); //MENU JAKO BITMAPY
+	al_draw_bitmap(wczytajgre, SCREEN_W / 2, (SCREEN_H / 2) - 80, NULL);
+	al_draw_bitmap(autorzy, SCREEN_W / 2, (SCREEN_H / 2) - 60, NULL);
+	al_draw_bitmap(wyjscie, SCREEN_W / 2, (SCREEN_H / 2) - 40, NULL);
+	al_draw_bitmap(wskaznik, SCREEN_W / 2 + 20, (SCREEN_H / 2) - 100, NULL); //wskaźnik, trójkąt, ma się poruszać
+
+
+
+
+	
 	/*
 	/ALLEGRO_FONT *fontStrTyt = al_load_font("8bitoperator_jve.ttf", 36, NULL); //fonty menu
 	/ALLEGRO_FONT *fontTytul = al_load_font("8bitoperator_jve.ttf", 50, NULL);
@@ -158,7 +181,7 @@ int main()
 	//al_draw_multiline_textf(fontOknoTekstowe4, al_map_rgb(255, 255, 255), SCREEN_W / 2, (SCREEN_H / 2 - 180), 640, 20, ALLEGRO_ALIGN_CENTRE, "....nie ma juz sensu go szukać..."); 
 	//al_draw_multiline_textf(fontOknoTekstowe5, al_map_rgb(255, 255, 255), SCREEN_W / 2, (SCREEN_H / 2 - 180), 640, 20, ALLEGRO_ALIGN_CENTRE, "... dobrze wiesz gdzie go zabrali......."); //następnie włącza się tutorial
 
-		
+
 	//ifstream plik;
 	//plik.open("lab.txt");
 	//
@@ -187,7 +210,6 @@ int main()
 	//ALLEGRO_FONT *font4 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
 	//al_draw_text(font, al_map_rgb(128, 128, 0), SCREEN_W / 2, (SCREEN_H / 2) - 36, ALLEGRO_ALIGN_CENTRE, "NOWA GRA '\n' WCZYTAJ POZIOM '\n' AUTORZY '\n' WYJŚCIE");
 
-#pragma endregion
 
 	al_flip_display();
 	al_rest(3.0);
@@ -201,6 +223,10 @@ int main()
 	//al_destroy_font(fontOknoTekstowe3);
 	//al_destroy_font(fontOknoTekstowe4);
 	//al_destroy_font(fontOknoTekstowe5);
+	al_destroy_bitmap(nowagra);
+	al_destroy_bitmap(wczytajgre);
+	al_destroy_bitmap(autorzy);
+	al_destroy_bitmap(wyjscie);
 	//al_destroy_timer(timer);
 	al_destroy_display(display);
 
