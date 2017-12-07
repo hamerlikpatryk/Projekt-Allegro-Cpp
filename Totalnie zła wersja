@@ -28,8 +28,10 @@ int main()
 		return -1;
 	}
 
-	al_set_new_display_flags(ALLEGRO_WINDOWED);
-	ALLEGRO_DISPLAY *display = al_create_display(SCREEN_W, SCREEN_H);
+
+	ALLEGRO_DISPLAY *display = NULL;
+		
+	display = al_create_display(SCREEN_W, SCREEN_H);
 	al_set_window_position(display, 200, 100);
 	al_set_window_title(display, "Wieza");
 
@@ -97,7 +99,7 @@ int main()
 
 	//int state = NULL;
 
-	al_init_image_addon(); ///////////////////////wczytywanie bitmap
+	
 
 
 	ALLEGRO_BITMAP *nowagra = NULL;
@@ -105,12 +107,11 @@ int main()
 	ALLEGRO_BITMAP *autorzy = NULL;
 	ALLEGRO_BITMAP *wyjscie = NULL;
 
-
-
-	al_load_bitmap("nowagra.bmp");
-	al_load_bitmap("wczytajgre.bmp");
-	al_load_bitmap("autorzy.bmp");
-	al_load_bitmap("wyjscie.bmp");
+	al_init_image_addon(); ///////////////////////wczytywanie bitmap
+	nowagra=al_load_bitmap("nowagra.png");
+	wczytajgre=al_load_bitmap("wczytajgre.png");
+	autorzy=al_load_bitmap("autorzy.png");
+	wyjscie=al_load_bitmap("wyjscie.png");
 
 
 
@@ -152,6 +153,7 @@ int main()
 		al_flip_display();
 		al_clear_to_color(al_map_rgb(0, 0, 0));
 
+		al_rest(3.0);
 
 	}
 
@@ -262,8 +264,6 @@ int main()
 	//al_draw_text(font, al_map_rgb(128, 128, 0), SCREEN_W / 2, (SCREEN_H / 2) - 36, ALLEGRO_ALIGN_CENTRE, "NOWA GRA '\n' WCZYTAJ POZIOM '\n' AUTORZY '\n' WYJŚCIE");
 
 
-	al_flip_display();
-	al_rest(3.0);
 	//al_destroy_font(fontStrTyt);
 	//al_destroy_font(fontTytul);
 	//al_destroy_font(fontMenu);
@@ -278,6 +278,7 @@ int main()
 	al_destroy_bitmap(wczytajgre);
 	al_destroy_bitmap(autorzy);
 	al_destroy_bitmap(wyjscie);
+	al_destroy_event_queue(event_queue);
 	al_destroy_timer(timer);
 	al_destroy_display(display);
 
