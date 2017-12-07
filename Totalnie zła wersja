@@ -101,33 +101,31 @@ int main()
 
 	
 
+	ALLEGRO_BITMAP *menu = NULL;
 
-	ALLEGRO_BITMAP *nowagra = NULL;
-	ALLEGRO_BITMAP *wczytajgre = NULL;
-	ALLEGRO_BITMAP *autorzy = NULL;
-	ALLEGRO_BITMAP *wyjscie = NULL;
+	ALLEGRO_BITMAP *nowagraakt = NULL;
+	ALLEGRO_BITMAP *wczytajpoziomakt = NULL;
+	ALLEGRO_BITMAP *autorzyakt = NULL;
+	ALLEGRO_BITMAP *wyjscieakt = NULL;
 
 	al_init_image_addon(); ///////////////////////wczytywanie bitmap
-	nowagra=al_load_bitmap("nowagra.png");
-	wczytajgre=al_load_bitmap("wczytajgre.png");
-	autorzy=al_load_bitmap("autorzy.png");
-	wyjscie=al_load_bitmap("wyjscie.png");
 
+	menu = al_load_bitmap("menu.png");
+
+	nowagraakt =al_load_bitmap("nowagra.png");
+	wczytajpoziomakt =al_load_bitmap("wczytajpoziomakt.png");
+	autorzyakt =al_load_bitmap("autorzyakt.png");
+	wyjscieakt =al_load_bitmap("wyjscieakt.png");
+
+
+	
 
 
 	//al_init_font_addon();
 	//al_init_ttf_addon();
 
-
-
-
-	al_draw_bitmap(nowagra, SCREEN_W / 2, (SCREEN_H / 2) - 100, NULL); //MENU JAKO BITMAPY
-	al_draw_bitmap(wczytajgre, SCREEN_W / 2, (SCREEN_H / 2) - 80, NULL);
-	al_draw_bitmap(autorzy, SCREEN_W / 2, (SCREEN_H / 2) - 60, NULL);
-	al_draw_bitmap(wyjscie, SCREEN_W / 2, (SCREEN_H / 2) - 40, NULL);
-
-
 	
+
 	while (!done)   //////////////////tworzenie myszki (warunki)
 	{
 		ALLEGRO_EVENT events;
@@ -153,9 +151,92 @@ int main()
 		al_flip_display();
 		al_clear_to_color(al_map_rgb(0, 0, 0));
 
-		al_rest(3.0);
-
 	}
+			al_draw_bitmap(menu, 0, 0, NULL);
+
+			// nowa gra bitmapa dla pkt (x, y)
+				if (x > 160  && x<390 && y >70 && y<130)     // dane pola bitmapy //
+				{
+					al_flip_display();
+					al_draw_bitmap(nowagraakt, 160, 70, NULL);
+				}
+			// autorzy bitmapa dla pkt (x, y)
+				else if (x > 215 && x<405 && y >150 && y<200)
+			{
+				al_flip_display();
+				al_draw_bitmap(autorzyakt, 215, 150, NULL);
+			}
+
+			// wczytaj poziom bitmapa dla pkt (x, y)
+				else if (x > 300 && x<580 && y >250 && y<320)
+			{
+				al_flip_display();
+				al_draw_bitmap(wczytajpoziomakt, 300, 250, NULL);
+			}
+
+			// wyjscie bitmapa dla pkt (x, y)
+				else if (x > 330 && x<530 && y >320 && y<370)
+			{
+				al_flip_display();
+				al_draw_bitmap(wyjscieakt, 330, 320, NULL);
+			}
+			else
+			{
+				al_flip_display();
+				al_draw_bitmap(menu, 0, 0, NULL);
+			}
+		
+	
+	
+	/*
+	al_draw_bitmap(nowagraakt, SCREEN_W / 2, (SCREEN_H / 2) - 100, NULL); //MENU JAKO BITMAPY
+	al_draw_bitmap(wczytajpoziomakt, SCREEN_W / 2, (SCREEN_H / 2) - 80, NULL);
+	al_draw_bitmap(autorzyakt, SCREEN_W / 2, (SCREEN_H / 2) - 60, NULL);
+	al_draw_bitmap(wyjscieakt, SCREEN_W / 2, (SCREEN_H / 2) - 40, NULL);
+*/
+
+
+
+	/* algorytm na zmianę obrazu po najechaniu
+	/nowa gra bitmapa dla pkt 250, 100 (x,y)
+	if (x > 250 /dane pola bitmapy/ && x<640 && y >-40 && y<10)
+	{
+	al_flip_display();
+	al_draw_bitmap(nowagraakt,0,0,0);
+	}
+	/autorzy bitmapa dla pkt 250, 100 (x,y)
+	else if (x > 560 /dane pola bitmapy/ && x<640 && y >-40 && y<10)
+	{
+	al_flip_display();
+	al_draw_bitmap(autorzyakt,0,0,0);
+	}
+
+	/wczytaj poziom bitmapa dla pkt 250, 100 (x,y)
+	else if (x > 560 /dane pola bitmapy/ && x<640 && y >-40 && y<10)
+	{
+	al_flip_display();
+	al_draw_bitmap(wczytajpoziomakt,0,0,0);
+	}
+
+	/wyjscie bitmapa dla pkt 250, 100 (x,y)
+	else if (x > 560 /dane pola bitmapy/ && x<640 && y >-40 && y<10)
+	{
+	al_flip_display();
+	al_draw_bitmap(wyjscieakt,0,0,0);
+	}
+	else
+	{
+	al_flip_display();
+	al_draw_bitmap(menu, 0, 0, 0);
+	}
+	
+	
+	
+	
+	
+	*/
+
+
 
 
 
@@ -274,10 +355,11 @@ int main()
 	//al_destroy_font(fontOknoTekstowe3);
 	//al_destroy_font(fontOknoTekstowe4);
 	//al_destroy_font(fontOknoTekstowe5);
-	al_destroy_bitmap(nowagra);
-	al_destroy_bitmap(wczytajgre);
-	al_destroy_bitmap(autorzy);
-	al_destroy_bitmap(wyjscie);
+	al_destroy_bitmap(nowagraakt);
+	al_destroy_bitmap(wczytajpoziomakt);
+	al_destroy_bitmap(autorzyakt);
+	al_destroy_bitmap(wyjscieakt);
+	al_destroy_bitmap(menu);
 	al_destroy_event_queue(event_queue);
 	al_destroy_timer(timer);
 	al_destroy_display(display);
