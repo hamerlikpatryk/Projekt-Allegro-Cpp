@@ -17,7 +17,7 @@
 const int SCREEN_W = 640;
 const int SCREEN_H = 480;
 const float FPS = 60;
-//FILE *fabula;
+
 
 int main()
 {
@@ -30,7 +30,7 @@ int main()
 
 
 	ALLEGRO_DISPLAY *display = NULL;
-		
+
 	display = al_create_display(SCREEN_W, SCREEN_H);
 	al_set_window_position(display, 200, 100);
 	al_set_window_title(display, "Wieza");
@@ -44,7 +44,7 @@ int main()
 	ALLEGRO_COLOR blue = al_map_rgb(44, 117, 255);
 	ALLEGRO_COLOR yellow = al_map_rgb(255, 255, 0);
 	ALLEGRO_COLOR playerColor = blue;
-	
+
 	bool done = false;
 	int x = 10, y = 10, moveSpeed = 5;
 
@@ -75,61 +75,31 @@ int main()
 	al_register_event_source(event_queue, al_get_mouse_event_source());
 	al_hide_mouse_cursor(display);  ////////////
 
+	al_init_image_addon();
+
 	al_init_primitives_addon();
 	al_flip_display();
 	al_start_timer(timer);
 
+	ALLEGRO_BITMAP *menu = al_load_bitmap("menu.png");
 
+	ALLEGRO_BITMAP *nowagraakt = al_load_bitmap("nowagraakt.png");
+	ALLEGRO_BITMAP *wczytajpoziomakt = al_load_bitmap("wczytajpoziomakt.png");
+	ALLEGRO_BITMAP *autorzyakt = al_load_bitmap("autorzyakt.png");
+	ALLEGRO_BITMAP *wyjscieakt = al_load_bitmap("wyjscieakt.png");
 
-	//al_init_primitives_addon();
-	//al_install_keyboard();
-
-
-	// ALLEGRO_COLOR electricBlue = al_map_rgb(44, 117, 255);
-
-	//al_draw_filled_triangle(160, 120, 180, 120, 170, 140,  al_map_rgb(255, 0, 0 ));
-
-	//ALLEGRO_EVENT_QUEUE *event_queue = al_create_event_queue();
-
-	//al_register_event_source(event_queue, al_get_keyboard_event_source());
-
-	//bool done = false;
-	//int x = 10, y = 10;
-	//int moveSpeed = 5;
-
-	//int state = NULL;
-
-	
-
-	ALLEGRO_BITMAP *menu = NULL;
-
-	ALLEGRO_BITMAP *nowagraakt = NULL;
-	ALLEGRO_BITMAP *wczytajpoziomakt = NULL;
-	ALLEGRO_BITMAP *autorzyakt = NULL;
-	ALLEGRO_BITMAP *wyjscieakt = NULL;
-
-	al_init_image_addon(); ///////////////////////wczytywanie bitmap
-
-	menu = al_load_bitmap("menu.png");
-
-	nowagraakt =al_load_bitmap("nowagra.png");
-	wczytajpoziomakt =al_load_bitmap("wczytajpoziomakt.png");
-	autorzyakt =al_load_bitmap("autorzyakt.png");
-	wyjscieakt =al_load_bitmap("wyjscieakt.png");
-
-
-	
-
-
-	//al_init_font_addon();
-	//al_init_ttf_addon();
-
+	al_init_font_addon();
+	al_init_ttf_addon();
+	ALLEGRO_FONT *fontAutorzy = al_load_font("8bitoperator_jve.ttf", 36, NULL);
 	
 
 	while (!done)   //////////////////tworzenie myszki (warunki)
 	{
+		
 		ALLEGRO_EVENT events;
 		al_wait_for_event(event_queue, &events);
+		
+	
 
 		if (events.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
 		{
@@ -147,219 +117,97 @@ int main()
 			else if (events.mouse.button & 2)
 				playerColor = yellow;
 		}
-		al_draw_rectangle(x, y, x + 10, y + 10, playerColor, 1);
-		al_flip_display();
-		al_clear_to_color(al_map_rgb(0, 0, 0));
 
-	}
-			al_draw_bitmap(menu, 0, 0, NULL);
-
-			// nowa gra bitmapa dla pkt (x, y)
-				if (x > 160  && x<390 && y >70 && y<130)     // dane pola bitmapy //
-				{
-					al_flip_display();
-					al_draw_bitmap(nowagraakt, 160, 70, NULL);
-				}
-			// autorzy bitmapa dla pkt (x, y)
-				else if (x > 215 && x<405 && y >150 && y<200)
-			{
-				al_flip_display();
-				al_draw_bitmap(autorzyakt, 215, 150, NULL);
-			}
-
-			// wczytaj poziom bitmapa dla pkt (x, y)
-				else if (x > 300 && x<580 && y >250 && y<320)
-			{
-				al_flip_display();
-				al_draw_bitmap(wczytajpoziomakt, 300, 250, NULL);
-			}
-
-			// wyjscie bitmapa dla pkt (x, y)
-				else if (x > 330 && x<530 && y >320 && y<370)
-			{
-				al_flip_display();
-				al_draw_bitmap(wyjscieakt, 330, 320, NULL);
-			}
-			else
-			{
-				al_flip_display();
-				al_draw_bitmap(menu, 0, 0, NULL);
-			}
 		
-	
-	
-	/*
-	al_draw_bitmap(nowagraakt, SCREEN_W / 2, (SCREEN_H / 2) - 100, NULL); //MENU JAKO BITMAPY
-	al_draw_bitmap(wczytajpoziomakt, SCREEN_W / 2, (SCREEN_H / 2) - 80, NULL);
-	al_draw_bitmap(autorzyakt, SCREEN_W / 2, (SCREEN_H / 2) - 60, NULL);
-	al_draw_bitmap(wyjscieakt, SCREEN_W / 2, (SCREEN_H / 2) - 40, NULL);
-*/
+		al_draw_bitmap(menu, 0, 0, NULL);
+		
+		al_draw_rectangle(x, y, x + 10, y + 10, playerColor, 1);
+		
+		al_flip_display();
+
+		
+	//	ALLEGRO_FONT *fontOknoTekstowe1 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
+	//	ALLEGRO_FONT *fontOknoTekstowe2 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
+	//	ALLEGRO_FONT *fontOknoTekstowe3 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
+	//	ALLEGRO_FONT *fontOknoTekstowe4 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
+	//	ALLEGRO_FONT *fontOknoTekstowe5 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
 
 
+		// nowa gra bitmapa dla pkt (x, y)
+		if (x > 160 && x < 390 && y >70 && y < 130)     // dane pola bitmapy //nowa gra
+		{
+			al_draw_bitmap(nowagraakt, 160, 70, NULL);
+			al_draw_rectangle(x, y, x + 10, y + 10, playerColor, 1);
+			al_flip_display();
+			//if (events.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+		//	{
+			//	if (events.mouse.button & 1) // co robi po kliknięciu
+			//	{
+				//	al_draw_textf(fontOknoTekstowe1, al_map_rgb(255, 255, 255), SCREEN_W / 2, (SCREEN_H / 2 - 180), 640, "...Nie ma go...");
+			//		al_flip_display();
+				//}
+			//}
+			
+		}
+		// autorzy bitmapa dla pkt (x, y)
+		else if (x > 215 && x < 405 && y >150 && y < 200)
+		{
 
-	/* algorytm na zmianę obrazu po najechaniu
-	/nowa gra bitmapa dla pkt 250, 100 (x,y)
-	if (x > 250 /dane pola bitmapy/ && x<640 && y >-40 && y<10)
-	{
-	al_flip_display();
-	al_draw_bitmap(nowagraakt,0,0,0);
+			al_draw_bitmap(autorzyakt, 180, 130, NULL);
+			al_draw_rectangle(x, y, x + 10, y + 10, playerColor, 1);
+			al_flip_display();
+		}
+			/*if (events.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+			{
+				if (events.mouse.button & 1) // co robi po kliknięciu
+				{
+					al_set_target_backbuffer(display);
+					al_clear_to_color(al_map_rgb(0, 0, 0));
+					al_draw_textf(fontAutorzy, al_map_rgb(255, 220, 0), SCREEN_W / 2, (SCREEN_H / 2 - 180), 0, "Tworca gry jest  Patryk Hamerlik");
+			    
+				}
+			}
+			
+		}*/
+
+		// wczytaj poziom bitmapa dla pkt (x, y)
+		else if (x > 150 && x < 500 && y >200 && y < 250)
+		{
+		
+			al_draw_bitmap(wczytajpoziomakt, 150, 200, NULL);
+			al_draw_rectangle(x, y, x + 10, y + 10, playerColor, 1);
+			al_flip_display();
+		//	if (events.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+		//	{
+		//		if (events.mouse.button & 1) // co robi po kliknięciu
+		//			done = true;
+		//	}
+		}
+
+		// wyjscie bitmapa dla pkt (x, y)
+		else if (x > 150 && x < 530 && y >250 && y < 370)
+		{
+			
+			al_draw_bitmap(wyjscieakt, 150, 250, NULL);
+			al_draw_rectangle(x, y, x + 10, y + 10, playerColor, 1);
+			al_flip_display();
+			if (events.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+			{
+				if (events.mouse.button & 1) // co robi po kliknięciu
+					done = true;
+			}
+		}
+		
+		
+		
+		
 	}
-	/autorzy bitmapa dla pkt 250, 100 (x,y)
-	else if (x > 560 /dane pola bitmapy/ && x<640 && y >-40 && y<10)
-	{
-	al_flip_display();
-	al_draw_bitmap(autorzyakt,0,0,0);
-	}
-
-	/wczytaj poziom bitmapa dla pkt 250, 100 (x,y)
-	else if (x > 560 /dane pola bitmapy/ && x<640 && y >-40 && y<10)
-	{
-	al_flip_display();
-	al_draw_bitmap(wczytajpoziomakt,0,0,0);
-	}
-
-	/wyjscie bitmapa dla pkt 250, 100 (x,y)
-	else if (x > 560 /dane pola bitmapy/ && x<640 && y >-40 && y<10)
-	{
-	al_flip_display();
-	al_draw_bitmap(wyjscieakt,0,0,0);
-	}
-	else
-	{
-	al_flip_display();
-	al_draw_bitmap(menu, 0, 0, 0);
-	}
-	
-	
-	
-	
-	
-	*/
-
-
-
-
-
-
-						 /*
-	/ALLEGRO_FONT *fontStrTyt = al_load_font("8bitoperator_jve.ttf", 36, NULL); //fonty menu
-	/ALLEGRO_FONT *fontTytul = al_load_font("8bitoperator_jve.ttf", 50, NULL);
-	/ALLEGRO_FONT *fontMenu = al_load_font("8bitoperator_jve.ttf", 30, NULL);
-	/ALLEGRO_FONT *fontAutorzy = al_load_font("8bitoperator_jve.ttf", 36, NULL);
-
-
-
-	/if (!fontStrTyt)
-	/{
-	/	al_show_native_message_box(NULL, NULL, NULL, "Failed to load front page!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
-	return -1;
-	}
-	if (!fontTytul)
-	{
-	al_show_native_message_box(NULL, NULL, NULL, "Failed to load title page!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
-	return -1;
-	}
-	if (!fontMenu)
-	{
-	al_show_native_message_box(NULL, NULL, NULL, "Failed to load menu!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
-	return -1;
-	}*/
-	/*
-	while (1)
-	{
-	ALLEGRO_EVENT ev;
-	al_wait_for_event(event_queue, &ev);
-
-	if (ev.type == ALLEGRO_EVENT_TIMER) {
-	redraw = true;
-	}
-	else if (ev.type == ALLEGRO_EVENT_DISPLAY_CLOSE) {
-	break;
-	}
-
-	if (redraw && al_is_event_queue_empty(event_queue)) {
-	redraw = false;
-	al_clear_to_color(al_map_rgb(0, 0, 0));
-	al_flip_display();
-	}
-	}
-
-	*/
-	/*
-	al_clear_to_color (al_map_rgb (0, 0, 0));
-
-	al_draw_textf(fontStrTyt, al_map_rgb(255, 255, 0), SCREEN_W / 2, 0, ALLEGRO_ALIGN_CENTRE, "Patiboy Games przedstawia:");
-	//if (al_time == 3)
-	//{                            do zmian
-	al_draw_textf(fontTytul, al_map_rgb(139, 0, 0), SCREEN_W / 2, (SCREEN_H / 2 - 180), ALLEGRO_ALIGN_CENTRE, "WIEZA");
-	//}
-	al_draw_textf(fontTytul, al_map_rgb(139, 0, 0), SCREEN_W / 2, (SCREEN_H / 2 - 180), ALLEGRO_ALIGN_CENTRE, "WIEZA");
-	al_draw_multiline_textf(fontMenu, al_map_rgb(128, 128, 0), SCREEN_W / 2, (SCREEN_H / 2) - 100, 100, 40, ALLEGRO_ALIGN_CENTRE, "NOWA GRA  WCZYTAJ  POZIOM  AUTORZY  WYJSCIE" );
-	*/
-
-	///ALLEGRO_FONT *fontAutorzy = al_load_font("8bitoperator_jve.ttf", 40, NULL);
-	///ALLEGRO_FONT *fontWczytywaniePoziomu = al_load_font("8bitoperator_jve.ttf", 40, NULL);
-	//ALLEGRO_FONT *fontOknoTekstowe1 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
-	//ALLEGRO_FONT *fontOknoTekstowe2 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
-	//ALLEGRO_FONT *fontOknoTekstowe3 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
-	//ALLEGRO_FONT *fontOknoTekstowe4 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
-	//ALLEGRO_FONT *fontOknoTekstowe5 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
-
-
-	//al_draw_multiline_textf(fontAutorzy, al_map_rgb(255, 220, 0), SCREEN_W / 2, (SCREEN_H / 2 - 180), 640 , 50, ALLEGRO_ALIGN_CENTRE, "Tworca gry jest \n Patryk Hamerlik");
-
-	///al_draw_multiline_textf(fontWczytywaniePoziomu, al_map_rgb(161, 101, 0), SCREEN_W / 2, (SCREEN_H / 2 - 180),SCREEN_W, 60, ALLEGRO_ALIGN_CENTRE, "Aby wczytac poziom wpisz podany kod \n _ _ _ _");
-	//al_draw_multiline_textf(fontOknoTekstowe1, al_map_rgb(255, 255, 255), SCREEN_W / 2, (SCREEN_H / 2 - 180), 640, 20, ALLEGRO_ALIGN_CENTRE, "...Nie ma go...");
-	//al_draw_multiline_textf(fontOknoTekstowe2, al_map_rgb(255, 255, 255), SCREEN_W / 2, (SCREEN_H / 2 - 180), 640, 20, ALLEGRO_ALIGN_CENTRE, "...znowu cie okradli...");
-	//al_draw_multiline_textf(fontOknoTekstowe3, al_map_rgb(255, 255, 255), SCREEN_W / 2, (SCREEN_H / 2 - 180), 640, 20, ALLEGRO_ALIGN_CENTRE, "...zlym pomysłem było pić w tej przeklętej karczmie...");
-	//al_draw_multiline_textf(fontOknoTekstowe4, al_map_rgb(255, 255, 255), SCREEN_W / 2, (SCREEN_H / 2 - 180), 640, 20, ALLEGRO_ALIGN_CENTRE, "....nie ma juz sensu go szukać..."); 
-	//al_draw_multiline_textf(fontOknoTekstowe5, al_map_rgb(255, 255, 255), SCREEN_W / 2, (SCREEN_H / 2 - 180), 640, 20, ALLEGRO_ALIGN_CENTRE, "... dobrze wiesz gdzie go zabrali......."); //następnie włącza się tutorial
-
-
-	//ifstream plik;
-	//plik.open("lab.txt");
-	//
-
-	//	void al_draw_multiline_textf(const ALLEGRO_FONT *fontMenu,
-	//	ALLEGRO_COLOR color, float x, float y, float max_width, float line_height,
-	//	int flags, const char *format, ...)
-
-
-	//al_draw_bitmap();
-
-	//al_destroy_bitmap;
-
-
-
-
-	//ALLEGRO_FONT *font2 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
-	//al_draw_text(font, al_map_rgb(128, 128, 0), SCREEN_W / 2, (SCREEN_H / 2) - 36, ALLEGRO_ALIGN_CENTRE, "NOWA GRA '\n' WCZYTAJ POZIOM '\n' AUTORZY '\n' WYJŚCIE" );
-
-	//ALLEGRO_FONT *font3 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
-	//al_draw_text(font, al_map_rgb(128, 128, 0), SCREEN_W / 2, (SCREEN_H / 2) - 36, ALLEGRO_ALIGN_CENTRE, "NOWA GRA '\n' WCZYTAJ POZIOM '\n' AUTORZY '\n' WYJŚCIE");
-
-	//ALLEGRO_FONT *font3 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
-	//al_draw_text(font, al_map_rgb(128, 128, 0), SCREEN_W / 2, (SCREEN_H / 2) - 36, ALLEGRO_ALIGN_CENTRE, "NOWA GRA '\n' WCZYTAJ POZIOM '\n' AUTORZY '\n' WYJŚCIE");
-
-	//ALLEGRO_FONT *font4 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
-	//al_draw_text(font, al_map_rgb(128, 128, 0), SCREEN_W / 2, (SCREEN_H / 2) - 36, ALLEGRO_ALIGN_CENTRE, "NOWA GRA '\n' WCZYTAJ POZIOM '\n' AUTORZY '\n' WYJŚCIE");
-
-
-	//al_destroy_font(fontStrTyt);
-	//al_destroy_font(fontTytul);
-	//al_destroy_font(fontMenu);
-	//al_destroy_font(fontAutorzy);
-	///al_destroy_font(fontWczytywaniePoziomu);
-	//al_destroy_font(fontOknoTekstowe1);
-	///al_destroy_font(fontOknoTekstowe2);
-	//al_destroy_font(fontOknoTekstowe3);
-	//al_destroy_font(fontOknoTekstowe4);
-	//al_destroy_font(fontOknoTekstowe5);
 	al_destroy_bitmap(nowagraakt);
 	al_destroy_bitmap(wczytajpoziomakt);
 	al_destroy_bitmap(autorzyakt);
 	al_destroy_bitmap(wyjscieakt);
 	al_destroy_bitmap(menu);
+	al_destroy_font(fontAutorzy);
 	al_destroy_event_queue(event_queue);
 	al_destroy_timer(timer);
 	al_destroy_display(display);
