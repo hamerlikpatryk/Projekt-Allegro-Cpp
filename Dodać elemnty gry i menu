@@ -1,0 +1,252 @@
+#include <allegro5\allegro.h>
+#include <allegro5\allegro_native_dialog.h>
+#include <allegro5\allegro_ttf.h>
+#include <allegro5\allegro_font.h>
+#include <allegro5\allegro_primitives.h>
+#include <allegro5\allegro_image.h>
+#include <iostream>
+#include <stdio.h>
+#include <windows.h>
+
+/*
+* Title     : Wieza
+* Developer : Patryk Hamerlik
+* Studio	: Why it's looking like autistic pocket monster?
+*/
+
+const int SCREEN_W = 640;
+const int SCREEN_H = 480;
+const float FPS = 60;
+
+
+int main()
+{
+
+	if (!al_init())
+	{
+		al_show_native_message_box(NULL, NULL, NULL, "Failed to initialize allegro!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+		return -1;
+	}
+
+
+	ALLEGRO_DISPLAY *display = NULL;
+
+	display = al_create_display(SCREEN_W, SCREEN_H);
+	al_set_window_position(display, 200, 100);
+	al_set_window_title(display, "Wieza");
+
+	if (!display)
+	{
+		al_show_native_message_box(display, "title", "settings", "Failed to initialize display!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+		return -1;
+	}
+
+	ALLEGRO_COLOR blue = al_map_rgb(44, 117, 255);
+	ALLEGRO_COLOR yellow = al_map_rgb(255, 255, 0);
+	ALLEGRO_COLOR playerColor = blue;
+
+	bool done = false;
+	int x = 10, y = 10, moveSpeed = 5;
+
+
+
+	ALLEGRO_TIMER *timer = NULL;
+
+	timer = al_create_timer(1.0 / FPS);
+	if (!timer) {
+		al_show_native_message_box(display, "title", "settings", "Failed to initialize timer!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+		al_destroy_display(display);
+		return -1;
+	}
+
+	ALLEGRO_EVENT_QUEUE *event_queue = NULL;
+	bool redraw = true;
+
+	event_queue = al_create_event_queue();
+	if (!event_queue) {
+		al_show_native_message_box(display, "title", "settings", "Failed to initialize events!\n", NULL, ALLEGRO_MESSAGEBOX_ERROR);
+		al_destroy_display(display);
+		al_destroy_timer(timer);
+		return -1;
+	}
+	al_install_mouse();
+	al_register_event_source(event_queue, al_get_display_event_source(display));
+	al_register_event_source(event_queue, al_get_timer_event_source(timer));
+	al_register_event_source(event_queue, al_get_mouse_event_source());
+	al_hide_mouse_cursor(display);  ////////////
+
+	al_init_image_addon();
+
+	al_init_primitives_addon();
+	al_flip_display();
+	al_start_timer(timer);
+
+#pragma region Menu
+	ALLEGRO_BITMAP *menu = al_load_bitmap("menu.png");
+	ALLEGRO_BITMAP *nowagraakt = al_load_bitmap("nowagraakt.png");
+	ALLEGRO_BITMAP *wczytajpoziomakt = al_load_bitmap("wczytajpoziomakt.png");
+	ALLEGRO_BITMAP *autorzyakt = al_load_bitmap("autorzyakt.png");
+	ALLEGRO_BITMAP *wyjscieakt = al_load_bitmap("wyjscieakt.png");
+#pragma endregion
+#pragma region Elementy Gry
+	ALLEGRO_BITMAP *okno = al_load_bitmap("okno.png"); /*
+	ALLEGRO_BITMAP *podloga = al_load_bitmap("podloga.png");
+	ALLEGRO_BITMAP *postac = al_load_bitmap("postac.png");
+	ALLEGRO_BITMAP *wrog1 = al_load_bitmap("wrog1.png");
+	ALLEGRO_BITMAP *wrog2 = al_load_bitmap("wrog2.png");
+	ALLEGRO_BITMAP *szafa = al_load_bitmap("szafa.png");
+	ALLEGRO_BITMAP *lampa = al_load_bitmap("lampa.png");
+	ALLEGRO_BITMAP *wyjscie = al_load_bitmap("brama.png");*/
+#pragma endregion
+
+
+	al_init_font_addon();
+	al_init_ttf_addon();
+	ALLEGRO_FONT *fontAutorzy = al_load_font("8bitoperator_jve.ttf", 36, NULL);
+
+	int nowagra_on = 0;
+	int menu_on = 1;
+	int autorzy_on = 0;
+	int wczytajpoziom_on = 0;
+
+	while (!done)   //////////////////tworzenie myszki (warunki)
+	{
+
+		ALLEGRO_EVENT events;
+		al_wait_for_event(event_queue, &events);
+
+
+		if (events.type == ALLEGRO_EVENT_DISPLAY_CLOSE)
+		{
+			done == true;
+		}
+		else if (events.type == ALLEGRO_EVENT_MOUSE_AXES)
+		{
+			x = events.mouse.x;
+			y = events.mouse.y;
+		}
+		else if (events.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+		{
+			if (events.mouse.button & 1) // co robi po kliknięciu
+				playerColor = blue;
+			else if (events.mouse.button & 2)
+				playerColor = yellow;
+		}
+
+	
+		if(menu_on==1)
+		al_draw_bitmap(menu, 0, 0, NULL);
+
+		if (menu_on == 1)
+		al_draw_rectangle(x, y, x + 10, y + 10, playerColor, 1);
+
+	//	al_flip_display();
+
+		
+
+		//	ALLEGRO_FONT *fontOknoTekstowe1 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
+		//	ALLEGRO_FONT *fontOknoTekstowe2 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
+		//	ALLEGRO_FONT *fontOknoTekstowe3 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
+		//	ALLEGRO_FONT *fontOknoTekstowe4 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
+		//	ALLEGRO_FONT *fontOknoTekstowe5 = al_load_font("8bitoperator_jve.ttf", 20, NULL);
+
+
+		// nowa gra bitmapa dla pkt (x, y)
+		if (x > 160 && x < 390 && y >70 && y < 130 )     // dane pola bitmapy //nowa gra
+		{
+			if(menu_on ==1 ){
+			al_draw_bitmap(nowagraakt, 160, 70, NULL);
+			al_draw_rectangle(x, y, x + 10, y + 10, playerColor, 1);
+			//al_flip_display();
+			if (events.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+			{
+				if (events.mouse.button & 1) // co robi po kliknięciu
+				{
+					nowagra_on = 1;
+					menu_on = 0;
+				}
+				//	al_flip_display();
+				if (nowagra_on == 1)
+					al_draw_bitmap(okno, 0, 0, NULL);  /////////////tutaj opisać elementy gry
+				 //	al_draw_bitmap(podloga, 0, 395, NULL); /// zrobić od niej odbicia
+				//	al_draw_bitmap(postac, 100, 395, NULL);
+
+			}
+			}
+		}
+		// autorzy bitmapa dla pkt (x, y)
+		else if (x > 215 && x < 405 && y >150 && y < 200)
+		{
+			if (menu_on == 1)
+			{
+				al_draw_bitmap(autorzyakt, 180, 130, NULL);
+				al_draw_rectangle(x, y, x + 10, y + 10, playerColor, 1);
+			}
+			/*    if (events.mouse.button & 1) // co robi po kliknięciu
+			{
+				autorzy_on = 1;
+				menu_on = 0;
+			}
+			if (autorzy_on == 1)
+				al_draw_bitmap(autorzy, 0, 0, NULL); */
+
+		}
+
+		// wczytaj poziom bitmapa dla pkt (x, y)
+		else if (x > 150 && x < 500 && y >200 && y < 250)
+		{
+			if (menu_on == 1)
+			{ 
+			al_draw_bitmap(wczytajpoziomakt, 150, 200, NULL);
+			al_draw_rectangle(x, y, x + 10, y + 10, playerColor, 1);
+			/*    if (events.mouse.button & 1) // co robi po kliknięciu
+			{
+			wczytajpoziom_on = 1;
+			menu_on = 0;
+			}
+			if (wczytajpoziom_on == 1)
+			al_draw_bitmap(wczytajpoziom, 0, 0, NULL); */
+
+			}
+		}
+
+		// wyjscie bitmapa dla pkt (x, y)
+		else if (x > 150 && x < 530 && y >250 && y < 370)
+		{
+			if (menu_on == 1)
+			{ 
+			al_draw_bitmap(wyjscieakt, 150, 250, NULL);
+			al_draw_rectangle(x, y, x + 10, y + 10, playerColor, 1);
+			//al_flip_display();
+			if (events.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+			{
+				if (events.mouse.button & 1) // co robi po kliknięciu
+					done = true;
+			}
+		}
+		}
+		al_flip_display();
+
+
+	}
+	al_destroy_bitmap(nowagraakt);
+	al_destroy_bitmap(wczytajpoziomakt);
+	al_destroy_bitmap(autorzyakt);
+	al_destroy_bitmap(wyjscieakt);
+	al_destroy_bitmap(menu);
+	al_destroy_bitmap(okno);
+//	al_destroy_bitmap(podloga);
+//	al_destroy_bitmap(postac);
+//	al_destroy_bitmap(wrog1);
+//	al_destroy_bitmap(wrog2);
+//	al_destroy_bitmap(szafa);
+//	al_destroy_bitmap(lampa);
+//	al_destroy_bitmap(wyjscie);
+
+	al_destroy_font(fontAutorzy);
+	al_destroy_event_queue(event_queue);
+	al_destroy_timer(timer);
+	al_destroy_display(display);
+
+	return 0;
+}
