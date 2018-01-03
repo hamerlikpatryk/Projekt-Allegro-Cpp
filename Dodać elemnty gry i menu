@@ -168,15 +168,15 @@ int main()
 
 		if (al_key_down(&keyState, ALLEGRO_KEY_RIGHT))
 			if (al_key_down(&keyState, ALLEGRO_KEY_LCTRL))
-				postac_x += 4;
+				postac_x += 6;
 			else
-				postac_x += 2;
+				postac_x += 4;
 
 		if (al_key_down(&keyState, ALLEGRO_KEY_LEFT))
 			if (al_key_down(&keyState, ALLEGRO_KEY_LCTRL))
-				postac_x += -4;
+				postac_x += -6;
 			else
-				postac_x += -2;
+				postac_x += -4;
 
 		if (al_key_down(&keyState, ALLEGRO_KEY_UP))
 			postac_y += -14; //jump
@@ -292,30 +292,40 @@ int main()
 			al_draw_bitmap(lutnia1, okno_x+2201, 237 + 63, NULL);
 			al_draw_bitmap(postac1, postac_x, postac_y, NULL);
 
-			if (postac_x <= 200)
-			{
-				postac_x = 200;
-				okno_x += 3;
-			}
 			
-			if (postac_x >= 640 - 200)																						//wymiary postaci x=38 y=77
-			{
-				postac_x = 640 - 200;
-				okno_x -= 3;
+																				//wymiary postaci x=38 y=77
+			
+			
+
 				//umieścić przejście do kolejnego poziomu zanim przejdzie za obszar mapy
-			}
+		
 			if (postac_y <=150)
 				postac_y = 150;
 
 			if (postac_y >= 150 && postac_y <= 330 - 72) //grawitacja
 				postac_y = postac_y+7;
-				
-											//Kolizje
-			if (postac_y >= 330-72 && postac_x >= 0 && postac_x <= 2230) //podloga
+
+			okno_x -= 2;											    	// poruszanie okna
+			postac_x -= 2;													// i postaci
+
+		/*
+		if (okno_x <= postac_x)
+			{
+				nowagra1_on = 0;
+				menu_on = 1;
+			}
+		*/
+																	    	//Kolizje
+			if (postac_y >= 330-72 && postac_x >= 0 && postac_x <= 2230)    //podloga
 				postac_y = 330 - 72;
+
+			if (postac_y - 77 <= 282 && postac_x + 38 >= 422 && postac_x <= 445)    //podloga
+				postac_x = 422;
+
 				
-			if (((postac_y >= 254 || postac_y + 77 >= 254) && (postac_y <= 254 + 55 || postac_y + 77 <= 254 + 55)) && ((postac_x >= 422 || postac_x + 38 >= 422) && (postac_x >= 422 + 22 || postac_x + 38 <= 422 + 22))) //krzeslo
-				postac_x = 422 - 38;
+			//if (((postac_y >= 254 || postac_y + 77 >= 254) && (postac_y <= 254 + 55 || postac_y + 77 <= 254 + 55)) && ((postac_x >= 422 || postac_x + 38 >= 422) && (postac_x >= 422 + 22 || postac_x + 38 <= 422 + 22))) //krzeslo
+				//postac_x = 422 - 38;
+
 		
 
 			/*
