@@ -1,6 +1,22 @@
 #include <allegro5\allegro.h>
 #include <allegro5\allegro_image.h>
 #include <allegro5\allegro_primitives.h>
+#include <time.h>
+
+int collision(int b1_x, int b1_y, int b1_w, int b1_h, int b2_x, int b2_y, int b2_w, int b2_h)
+{
+	if ((b1_x > b2_x + b2_w - 1) || // is b1 on the right side of b2?
+		(b1_y > b2_y + b2_h - 1) || // is b1 under b2?
+		(b2_x > b1_x + b1_w - 1) || // is b2 on the right side of b1?
+		(b2_y > b1_y + b1_h - 1))   // is b2 under b1?
+	{
+		// no collision
+		return 0;
+	}
+
+	// collision
+	return 1;
+}
 
 int main()
 {
@@ -18,20 +34,28 @@ int main()
 	ALLEGRO_BITMAP *wyjscieakt = NULL;
 
 	ALLEGRO_BITMAP *wczytajpoziom = NULL;          // bitmapy po przejsciu z menu
-	ALLEGRO_BITMAP *autorzy = NULL;	
+	ALLEGRO_BITMAP *autorzy = NULL;
 
 	ALLEGRO_BITMAP * postac1 = NULL;
-	ALLEGRO_BITMAP *okno1 = NULL; //nowa gra
+	ALLEGRO_BITMAP *okno1_1 = NULL; //nowa gra
 	ALLEGRO_BITMAP *karczmarz1 = NULL;
 	ALLEGRO_BITMAP *stol1 = NULL;
 	ALLEGRO_BITMAP *krzeslo1_1 = NULL;
 	ALLEGRO_BITMAP *krzeslo1_2 = NULL;
 	ALLEGRO_BITMAP *bar1 = NULL;
-	ALLEGRO_BITMAP *lutnia1 = NULL; 
+	ALLEGRO_BITMAP *lutnia1 = NULL;
+	ALLEGRO_BITMAP *smierc = NULL;
+
+	ALLEGRO_BITMAP *okno1_2 = NULL;
+
+	ALLEGRO_BITMAP *okno1_3 = NULL;
+	ALLEGRO_BITMAP *okno1_4 = NULL;
+	ALLEGRO_BITMAP *okno1_5 = NULL;
+
 
 	//ALLEGRO_BITMAP *okno2 = NULL;
 
-	ALLEGRO_BITMAP *okno3 = NULL; 
+	ALLEGRO_BITMAP *okno3 = NULL;
 	ALLEGRO_BITMAP *podloga1 = NULL;
 	ALLEGRO_BITMAP *podloga2 = NULL;
 	ALLEGRO_BITMAP *podloga3_1 = NULL;
@@ -42,7 +66,7 @@ int main()
 	ALLEGRO_BITMAP *podloga3_6 = NULL;
 	ALLEGRO_BITMAP *podloga3_7 = NULL;
 	ALLEGRO_BITMAP *podloga3_8 = NULL;
-	ALLEGRO_BITMAP *polka3_1 = NULL; 
+	ALLEGRO_BITMAP *polka3_1 = NULL;
 	ALLEGRO_BITMAP *polka3_2 = NULL;
 	ALLEGRO_BITMAP *artefakt3_1 = NULL;
 
@@ -53,8 +77,8 @@ int main()
 	ALLEGRO_BITMAP *szafa = NULL;
 	ALLEGRO_BITMAP *lampa = NULL;
 	ALLEGRO_BITMAP *brama = NULL;
-	
-	
+
+
 
 	al_init();
 	display = al_create_display(640, 480);
@@ -72,7 +96,7 @@ int main()
 	//al_hide_mouse_cursor(display);
 
 
-	al_start_timer(timer); 
+	al_start_timer(timer);
 
 	al_init_primitives_addon();
 	al_init_image_addon();
@@ -89,7 +113,11 @@ int main()
 
 	postac1 = al_load_bitmap("postac1.png");
 
-	okno1 = al_load_bitmap("okno1.png");
+	okno1_1 = al_load_bitmap("okno1_1.png");
+	okno1_2 = al_load_bitmap("okno1_2.png");
+	okno1_3 = al_load_bitmap("okno1_3.png");
+	okno1_4 = al_load_bitmap("okno1_4.png");
+	okno1_5 = al_load_bitmap("okno1_5.png");
 	karczmarz1 = al_load_bitmap("karczmarz.png");
 	stol1 = al_load_bitmap("stol.png");
 	krzeslo1_1 = al_load_bitmap("krzeslo1.png");
@@ -99,7 +127,6 @@ int main()
 
 	//okno2 = al_load_bitmap("okno2.png");
 
-
 	okno3 = al_load_bitmap("okno3.png");
 	podloga1 = al_load_bitmap("podloga1.png");
 	podloga2 = al_load_bitmap("podloga2.png");
@@ -108,7 +135,6 @@ int main()
 	podloga3_3 = al_load_bitmap("podloga3_3.png");
 	podloga3_4 = al_load_bitmap("podloga3_4.png");
 	podloga3_5 = al_load_bitmap("podloga3_5.png");
-	podloga3_6 = al_load_bitmap("podloga3_6.png");
 	podloga3_7 = al_load_bitmap("podloga3_7.png");
 	podloga3_8 = al_load_bitmap("podloga3_8.png");
 	polka3_1 = al_load_bitmap("polka3_1.png");
@@ -122,29 +148,121 @@ int main()
 	szafa = al_load_bitmap("szafa.png");
 	lampa = al_load_bitmap("lampa.png");
 	brama = al_load_bitmap("brama.png");
+	smierc = al_load_bitmap("smierc.png");
 
 
 
-	
-	
 	int width = al_get_display_width(display);
 	int height = al_get_display_height(display);
 
 
 	int menu_on = 1;
-	int nowagra1_on = 0; //poziom 1
-//	int nowagra2_on = 0; //2
+	int nowagra1_1_on = 0; //poziom 1.1
+	int nowagra1_2_on = 0;
+	int nowagra1_3_on = 0;
+	int nowagra1_4_on = 0;
+	int nowagra1_5_on = 0;
+						 //	int nowagra2_on = 0; //2
 	int nowagra3_on = 0; //3
 	int autorzy_on = 0;
 	int wczytajpoziom_on = 0;
+	int kolizja = 0;
 
 	bool running = true;
 
 	int x = 10, y = 10, moveSpeed = 5; //myszka
+
 	int postac_x = 265; //klawiatura
 	int postac_y = 257;
-	int okno_x = 0;
-	int pozycja;
+	int postac_w = 38;
+	int postac_h = 77;
+	float szybkosc_postaci = 4;
+
+	int okno1_1_x = 0; //........................POZIOM 1 OKNO 1
+	
+	//fazy skoku
+	int faza_skoku = 1; // 0 =stoi 1 = leci 2 = spada
+
+	int obiekt[30][4];
+
+
+
+	time_t poczatek_skoku = 0;
+
+
+	int krzeslo_w = 22;
+	int krzeslo_h = 53;
+
+	int krzeslo1_1_1_x = okno1_1_x + 422;
+	int krzeslo1_1_1_y = 221 + 63;
+	
+
+	int stol_w = 128;
+	int stol_h = 35;
+
+	int stol1_1_x = okno1_1_x + 452;
+	int stol1_1_y = 301;
+
+	int bar1_w=43;
+	int bar1_h=64;
+
+	int bar1_x=130;
+	int bar1_y=272;
+	
+
+	int przeciwnik1_w=24;
+	int przeciwnik1_h=38;
+
+	int przeciwnik1_1_x= 420;
+	int przeciwnik1_1_y= 182 + 63;
+
+	int przeciwnik1_2_x= 501;
+	int przeciwnik1_2_y= 201 + 63;
+
+	int okno1_2_x = 0; //........................POZIOM 1 OKNO 2
+
+	
+		
+		
+	int krzeslo1_2_1_x = okno1_2_x + 188;
+	int krzeslo1_2_1_y = 221 + 63;
+
+
+	int krzeslo1_2_2_x = okno1_2_x + 458;
+	int krzeslo1_2_2_y = 221 + 63;
+	
+	int krzeslo1_2_3_x = okno1_2_x + 359;
+	int krzeslo1_2_3_y = 221 + 63;
+	
+
+	int stol1_2_x = okno1_2_x + 216;
+	int stol1_2_y = 301;
+	
+
+	int przeciwnik1_3_x = okno1_2_x + 80;
+	int przeciwnik1_3_y = 297; //y przeciwnika na podlodze
+
+	int przeciwnik1_4_x = okno1_2_x + 140;
+	int przeciwnik1_4_y = 297;
+
+	int przeciwnik1_5_x = okno1_2_x + 263;
+	int przeciwnik1_5_y = 297;
+
+	int przeciwnik1_6_x = okno1_2_x + 400;
+	int przeciwnik1_6_y = 297;
+
+	int przeciwnik1_7_x = okno1_2_x + 450;
+	int przeciwnik1_7_y = 262; // y wroga na stole
+
+	int przeciwnik1_8_x = okno1_2_x + 550;
+	int przeciwnik1_8_y = 244; // y wroga na krzesle
+
+	int okno1_3_x = 0; //..........................POZIOM 1 OKNO 3 
+
+	int okno1_4_x = 0; //..........................POZIOM 1 OKNO 4
+
+	int okno1_5_x = 0; //..........................POZIOM 1 OKNO 5
+
 
 	while (running)
 
@@ -168,18 +286,39 @@ int main()
 
 		if (al_key_down(&keyState, ALLEGRO_KEY_RIGHT))
 			if (al_key_down(&keyState, ALLEGRO_KEY_LCTRL))
-				postac_x += 6;
+				postac_x += szybkosc_postaci + 2;
 			else
-				postac_x += 4;
+				postac_x += szybkosc_postaci;
 
 		if (al_key_down(&keyState, ALLEGRO_KEY_LEFT))
 			if (al_key_down(&keyState, ALLEGRO_KEY_LCTRL))
-				postac_x += -6;
+				postac_x += -szybkosc_postaci + 2;
 			else
-				postac_x += -4;
+				postac_x += -szybkosc_postaci;
 
 		if (al_key_down(&keyState, ALLEGRO_KEY_UP))
-			postac_y += -14; //jump
+		{
+			if (faza_skoku == 0 || faza_skoku == 1)
+			{
+				postac_y += -szybkosc_postaci * 4; //jump
+				if (poczatek_skoku == 0)
+				{
+					poczatek_skoku = clock();
+					faza_skoku = 1;
+				}
+			}
+		}
+		if (!al_key_down(&keyState, ALLEGRO_KEY_UP)&& faza_skoku!=0)
+		{
+			faza_skoku = 2;
+		}
+		time_t actual = clock();
+		float roznica_czasu =(float)(actual - poczatek_skoku)/CLOCKS_PER_SEC;
+		if (roznica_czasu >= 0.15)
+		{
+			faza_skoku = 2;
+		}
+		if (faza_skoku = 1)
 
 		if (al_key_down(&keyState, ALLEGRO_KEY_SPACE))
 			//postac_y //atak
@@ -195,7 +334,7 @@ int main()
 		{
 			al_draw_bitmap(menu, 0, 0, NULL);								//rysowanie menu
 			al_draw_rectangle(x, y, x + 10, y + 10, playerColor, 1);
-																			// event po najechaniu i kliknięciu menu
+			// event po najechaniu i kliknięciu menu
 			if (x > 160 && x < 390 && y >70 && y < 130)
 			{
 				al_draw_bitmap(nowagraakt, 160, 70, NULL);
@@ -204,7 +343,7 @@ int main()
 				{
 					if (event.mouse.button & 1)
 					{
-						nowagra1_on = 1;
+						nowagra1_1_on = 1;
 						menu_on = 0;
 					}
 				}
@@ -233,7 +372,7 @@ int main()
 						wczytajpoziom_on = 1;
 						menu_on = 0;
 					}
-				
+
 				}
 			}
 			if (x > 150 && x < 530 && y >250 && y < 370)
@@ -248,133 +387,456 @@ int main()
 			}
 		}
 		//////////////////////////////////// EVENTY PO KLIKNIĘCIU NOWEJ GRY
-		if (nowagra1_on == 1)
+		if (nowagra1_1_on == 1)
 		{
-			al_draw_bitmap(okno1, okno_x, 0, NULL);  
-			if (okno_x > 0)
-			{
-				okno_x = 0;
-			}
-			al_draw_bitmap(podloga1, okno_x + 0, 335, NULL);
-			al_draw_bitmap(bar1, okno_x + 131, 272, NULL); //+62
-			al_draw_bitmap(karczmarz1, okno_x + 70, 191 + 63, NULL);
-			al_draw_bitmap(krzeslo1_1, okno_x+422, 221 + 63, NULL); //7
-			al_draw_bitmap(krzeslo1_1,okno_x+641, 221 + 63, NULL);
-			al_draw_bitmap(krzeslo1_1,okno_x+825, 221 + 63, NULL);
-			al_draw_bitmap(krzeslo1_1,okno_x+1095, 221 + 63, NULL);
-			al_draw_bitmap(krzeslo1_1,okno_x+1275, 221 + 63, NULL);
-			al_draw_bitmap(krzeslo1_1,okno_x+1492, 221 + 63, NULL);
-			al_draw_bitmap(krzeslo1_1,okno_x+1731, 221 + 63, NULL); //
-			al_draw_bitmap(krzeslo1_2,okno_x+996, 221 + 63, NULL); //4
-			al_draw_bitmap(krzeslo1_2,okno_x+1388, 221 + 63, NULL);
-			al_draw_bitmap(krzeslo1_2,okno_x+1660, 221 + 63, NULL);
-			al_draw_bitmap(krzeslo1_2,okno_x+2004, 221 + 63, NULL);
-			al_draw_bitmap(stol1, okno_x+453, 240 + 63, NULL); //4
-			al_draw_bitmap(stol1, okno_x+851, 240 + 63, NULL);
-			al_draw_bitmap(stol1, okno_x+1524, 240 + 63, NULL);
-			al_draw_bitmap(stol1, okno_x+1847, 240 + 63, NULL);
-			al_draw_bitmap(wrog1, okno_x+420, 182 + 63, NULL);  //15 wrogow
-			al_draw_bitmap(wrog1, okno_x+501, 201 + 63, NULL);
-			al_draw_bitmap(wrog1, okno_x+729, 234 + 63, NULL);
-			al_draw_bitmap(wrog1, okno_x+781, 234 + 63, NULL);
-			al_draw_bitmap(wrog1, okno_x+910, 201 + 63, NULL);
-			al_draw_bitmap(wrog1, okno_x+1042, 234 + 63, NULL);
-			al_draw_bitmap(wrog1, okno_x+1094, 182 + 63, NULL);
-			al_draw_bitmap(wrog1, okno_x+1185, 234 + 63, NULL);
-			al_draw_bitmap(wrog1, okno_x+1326, 234 + 63, NULL);
-			al_draw_bitmap(wrog1, okno_x+1448, 234 + 63, NULL);
-			al_draw_bitmap(wrog1, okno_x+1489, 182 + 63, NULL);
-			al_draw_bitmap(wrog1, okno_x+1586, 201 + 63, NULL);
-			al_draw_bitmap(wrog1, okno_x+1790, 234 + 63, NULL);
-			al_draw_bitmap(wrog1, okno_x+1899, 201 + 63, NULL);
-			al_draw_bitmap(wrog1, okno_x+2087, 234 + 63, NULL); // 
-			al_draw_bitmap(wrog2, okno_x+2163, 197 + 63, NULL);
-			al_draw_bitmap(lutnia1, okno_x+2201, 237 + 63, NULL);
+			al_draw_bitmap(okno1_1, okno1_1_x, 0, NULL); //.......................................BITMAPY
+			al_draw_bitmap(podloga1, okno1_1_x + 0, 335, NULL);
+			al_draw_bitmap(bar1, okno1_1_x + 131, 272, NULL); 
+			al_draw_bitmap(karczmarz1, okno1_1_x + 70, 191 + 63, NULL);
+			al_draw_bitmap(krzeslo1_1, okno1_1_x + 422, 221 + 63, NULL); 
+			al_draw_bitmap(wrog1, okno1_1_x + 420, 182 + 63, NULL);
+			al_draw_bitmap(wrog1, przeciwnik1_2_x, przeciwnik1_2_y, NULL);
+
 			al_draw_bitmap(postac1, postac_x, postac_y, NULL);
+			//................................................................................KOLIZJE
+			postac_y = postac_y + 7; //...........gravity
 
-			
-																				//wymiary postaci x=38 y=77
-			
-			
-
-				//umieścić przejście do kolejnego poziomu zanim przejdzie za obszar mapy
-		
-			if (postac_y <=150)
-				postac_y = 150;
-
-			if (postac_y >= 150 && postac_y <= 330 - 72) //grawitacja
-				postac_y = postac_y+7;
-
-			okno_x -= 2;											    	// poruszanie okna
-			postac_x -= 2;													// i postaci
-
-		/*
-		if (okno_x <= postac_x)
-			{
-				nowagra1_on = 0;
-				menu_on = 1;
-			}
-		*/
-																	    	//Kolizje
-			if (postac_y >= 330-72 && postac_x >= 0 && postac_x <= 2230)    //podloga
+			if (postac_y >= 330 - 72 && postac_x >= 0 && postac_x <= 2230)    //podloga
 				postac_y = 330 - 72;
 
-			if (postac_y - 77 <= 282 && postac_x + 38 >= 422 && postac_x <= 445)    //podloga
-				postac_x = 422;
+			if (collision(postac_x, postac_y, postac_w, postac_h, krzeslo1_1_1_x, krzeslo1_1_1_y, krzeslo_w, krzeslo_h)) //krzeslo1
+			{
+				szybkosc_postaci = 0.00001;
+				postac_y = postac_y - 7;
 
-				
-			//if (((postac_y >= 254 || postac_y + 77 >= 254) && (postac_y <= 254 + 55 || postac_y + 77 <= 254 + 55)) && ((postac_x >= 422 || postac_x + 38 >= 422) && (postac_x >= 422 + 22 || postac_x + 38 <= 422 + 22))) //krzeslo
-				//postac_x = 422 - 38;
+			}
+			if (!collision(postac_x, postac_y, postac_w, postac_h, krzeslo1_1_1_x, krzeslo1_1_1_y, krzeslo_w, krzeslo_h))
+			{
+				szybkosc_postaci = 4;
+			}
 
+			if (collision(postac_x, postac_y, postac_w, postac_h, stol1_1_x, stol1_1_y, stol_w, stol_h)) //stol1
+			{
+				szybkosc_postaci = 0.00001;
+				postac_y = postac_y - 7;
+
+			}
+			if (!collision(postac_x, postac_y, postac_w, postac_h, stol1_1_x, stol1_1_y, stol_w, stol_h))
+			{
+				szybkosc_postaci = 4;
+			}
+			if (postac_y >= 330 - 72 && postac_x >= 0 && postac_x <= 2230)
+				postac_y = 330 - 72;
+
+			if (collision(postac_x, postac_y, postac_w, postac_h, bar1_x, bar1_y, bar1_w, bar1_h)) //bar
+			{
+				szybkosc_postaci = 0.00001;
+				postac_y = postac_y - 7;
+
+			}
+			if (!collision(postac_x, postac_y, postac_w, postac_h, bar1_x, bar1_y, bar1_w, bar1_h))
+			{
+				szybkosc_postaci = 4;
+			}
+
+			if (collision(postac_x, postac_y, postac_w, postac_h, przeciwnik1_1_x, przeciwnik1_1_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik1
+			{
+				al_draw_bitmap(smierc, 0, 0, NULL); // 	
+				szybkosc_postaci = 0;
+				if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+				{
+					if (event.mouse.button & 1)
+					{
+						nowagra1_1_on = 0;
+						menu_on = 1;
+						postac_x = 265;
+						postac_y = 257;
+					}
+				}
+			}
+
+			if (collision(postac_x, postac_y, postac_w, postac_h, przeciwnik1_2_x, przeciwnik1_2_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik2
+			{
+				al_draw_bitmap(smierc, 0, 0, NULL); // 
+				szybkosc_postaci = 0;
+				if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+				{
+					if (event.mouse.button & 1)
+					{
+						nowagra1_1_on = 0;
+						menu_on = 1;
+						postac_x = 265;
+						postac_y = 257;
+
+					}
+				}
+			}
+			if (okno1_1_x > 0)
+			{
+				okno1_1_x;
+			}
+			
+			if (postac_x - 265 == 640) ///////////////...................................przejscie do kolejnego okna
+			{
+				nowagra1_1_on = 0;
+				nowagra1_2_on = 1;
+			}
+		}
+		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+		if (nowagra1_2_on == 1) //.........................................OKNO 1.2
+		{
+			al_draw_bitmap(okno1_2, okno1_2_x, 0, NULL); // .................................BITMAPY
+			al_draw_bitmap(podloga1, okno1_2_x + 0, 335, NULL);
+			
+			al_draw_bitmap(krzeslo1_1, okno1_2_x + 188, 221 + 63, NULL);
+			al_draw_bitmap(krzeslo1_1, okno1_2_x + 458, 221 + 63, NULL);
+			al_draw_bitmap(krzeslo1_2, okno1_2_x + 359, 221 + 63, NULL);
+			al_draw_bitmap(stol1, okno1_2_x + 216, 240 + 63, NULL); 
+
+			al_draw_bitmap(wrog1, okno1_2_x + 80, 335 - przeciwnik1_h, NULL);
+			al_draw_bitmap(wrog1, okno1_2_x + 140, 335 - przeciwnik1_h, NULL);
+			al_draw_bitmap(wrog1, okno1_2_x + 263, 335-stol_h - przeciwnik1_h, NULL);
+			al_draw_bitmap(wrog1, okno1_2_x + 400, 335 - przeciwnik1_h, NULL);
+			al_draw_bitmap(wrog1, okno1_2_x + 450, 335-krzeslo_h - przeciwnik1_h, NULL);
+			al_draw_bitmap(wrog1, okno1_2_x + 550, 335 - przeciwnik1_h, NULL);
+
+			al_draw_bitmap(postac1, postac_x - 265, postac_y, NULL);
+			//......................................................................................KOLIZJE
+			postac_y = postac_y + 7; //...........gravity
+
+			if (postac_y >= 330 - 72 && postac_x >= 0 && postac_x <= 2230)    //podloga
+				postac_y = 330 - 72;
+
+			if (collision(postac_x - 265, postac_y, postac_w, postac_h, krzeslo1_2_1_x, krzeslo1_2_1_y, krzeslo_w, krzeslo_h)) //krzeslo1
+			{
+				szybkosc_postaci = 0.00001;
+				postac_y = postac_y - 7;
+
+			}
+			if (!collision(postac_x - 265, postac_y, postac_w, postac_h, krzeslo1_2_1_x, krzeslo1_2_1_y, krzeslo_w, krzeslo_h))
+			{
+				szybkosc_postaci = 4;
+			}
+			if (collision(postac_x - 265, postac_y, postac_w, postac_h, krzeslo1_2_2_x, krzeslo1_2_2_y, krzeslo_w, krzeslo_h)) //krzeslo2
+			{
+				szybkosc_postaci = 0.00001;
+				postac_y = postac_y - 7;
+
+			}
+			if (!collision(postac_x - 265, postac_y, postac_w, postac_h, krzeslo1_2_2_x, krzeslo1_2_2_y, krzeslo_w, krzeslo_h))
+			{
+				szybkosc_postaci = 4;
+			}
+			if (collision(postac_x - 265, postac_y, postac_w, postac_h, krzeslo1_2_3_x, krzeslo1_2_3_y, krzeslo_w, krzeslo_h)) //krzeslo3
+			{
+				szybkosc_postaci = 0.00001;
+				postac_y = postac_y - 7;
+
+			}
+			if (!collision(postac_x - 265, postac_y, postac_w, postac_h, krzeslo1_2_3_x, krzeslo1_2_3_y, krzeslo_w, krzeslo_h))
+			{
+				szybkosc_postaci = 4;
+			}
+
+			if (collision(postac_x - 265, postac_y, postac_w, postac_h, stol1_2_x, stol1_2_y, stol_w, stol_h)) //stol1
+			{
+				szybkosc_postaci = 0.00001;
+				postac_y = postac_y - 7;
+
+			}
+			if (!collision(postac_x - 265, postac_y, postac_w, postac_h, stol1_2_x, stol1_2_y, stol_w, stol_h))
+			{
+				szybkosc_postaci = 4;
+			}
+
+			if (collision(postac_x - 265, postac_y, postac_w, postac_h, przeciwnik1_3_x, przeciwnik1_3_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik1
+			{
+				al_draw_bitmap(smierc, 0, 0, NULL); // 	
+				szybkosc_postaci = 0;
+				if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+				{
+					if (event.mouse.button & 1)
+					{
+						nowagra1_1_on = 0;
+						menu_on = 1;
+						postac_x = 265;
+						postac_y = 257;
+					}
+				}
+			}
+
+			if (collision(postac_x - 265, postac_y, postac_w, postac_h, przeciwnik1_4_x, przeciwnik1_4_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik2
+			{
+				al_draw_bitmap(smierc, 0, 0, NULL); // 
+				szybkosc_postaci = 0;
+				if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+				{
+					if (event.mouse.button & 1)
+					{
+						nowagra1_1_on = 0;
+						menu_on = 1;
+						postac_x = 265;
+						postac_y = 257;
+
+					}
+				}
+			}
+			if (collision(postac_x - 265, postac_y, postac_w, postac_h, przeciwnik1_5_x, przeciwnik1_5_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik3
+			{
+				al_draw_bitmap(smierc, 0, 0, NULL); // 	
+				szybkosc_postaci = 0;
+				if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+				{
+					if (event.mouse.button & 1)
+					{
+						nowagra1_1_on = 0;
+						menu_on = 1;
+						postac_x = 265;
+						postac_y = 257;
+					}
+				}
+			}
+
+			if (collision(postac_x - 265, postac_y, postac_w, postac_h, przeciwnik1_6_x, przeciwnik1_6_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik4
+			{
+				al_draw_bitmap(smierc, 0, 0, NULL); // 	
+				szybkosc_postaci = 0;
+				if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+				{
+					if (event.mouse.button & 1)
+					{
+						nowagra1_1_on = 0;
+						menu_on = 1;
+						postac_x = 265;
+						postac_y = 257;
+					}
+				}
+			}
+
+			if (collision(postac_x - 265, postac_y, postac_w, postac_h, przeciwnik1_7_x, przeciwnik1_7_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik5
+			{
+				al_draw_bitmap(smierc, 0, 0, NULL); // 	
+				szybkosc_postaci = 0;
+				if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+				{
+					if (event.mouse.button & 1)
+					{
+						nowagra1_1_on = 0;
+						menu_on = 1;
+						postac_x = 265;
+						postac_y = 257;
+					}
+				}
+			}
+
+			if (collision(postac_x - 265, postac_y, postac_w, postac_h, przeciwnik1_8_x, przeciwnik1_8_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik6
+			{
+				al_draw_bitmap(smierc, 0, 0, NULL); // 	
+				szybkosc_postaci = 0;
+				if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+				{
+					if (event.mouse.button & 1)
+					{
+						nowagra1_1_on = 0;
+						menu_on = 1;
+						postac_x = 265;
+						postac_y = 257;
+					}
+				}
+			}
+
+
+
+			if (okno1_2_x > 0)
+			{
+				okno1_2_x;
+			}
+
+			if (postac_x - 265 == 640) ///////////////...................................przejscie do kolejnego okna
+			{
+				nowagra1_2_on = 0;
+				nowagra1_3_on = 1;
+			}
+		}
+		if (nowagra1_3_on == 1) //.........................................OKNO 1.3
+		{
+
+			al_draw_bitmap(okno1_3, okno1_3_x, 0, NULL); // .................................BITMAPY
+			al_draw_bitmap(podloga1, okno1_3_x + 0, 335, NULL);
+
+			al_draw_bitmap(krzeslo1_1, okno1_3_x + 1492, 221 + 63, NULL);
+			al_draw_bitmap(krzeslo1_1, okno1_3_x + 1731, 221 + 63, NULL); //
+			al_draw_bitmap(krzeslo1_2, okno1_3_x + 996, 221 + 63, NULL); //4
+			al_draw_bitmap(stol1, okno1_3_x + 1524, 240 + 63, NULL);
+
+			al_draw_bitmap(wrog1, okno1_3_x + 1042, 234 + 63, NULL);
+			al_draw_bitmap(wrog1, okno1_3_x + 1094, 182 + 63, NULL);
+			al_draw_bitmap(wrog1, okno1_3_x + 1185, 234 + 63, NULL);
+			al_draw_bitmap(wrog1, okno1_3_x + 1326, 234 + 63, NULL);
+
+			al_draw_bitmap(postac1, postac_x = 0, postac_y, NULL);
+
+			//...................................................................KOLIZJE
+
+			postac_y = postac_y + 7; //...........gravity
+
+			if (postac_y >= 330 - 72 && postac_x >= 0 && postac_x <= 2230)    //podloga
+				postac_y = 330 - 72;
+
+			if (okno1_3_x > 0)
+			{
+				okno1_3_x;
+			}
+
+			if (postac_x == 640) ///////////////...................................przejscie do kolejnego okna
+			{
+				nowagra1_3_on = 0;
+				nowagra1_4_on = 1;
+			}
+		}
+
+		if (nowagra1_4_on == 1) //.........................................OKNO 1.4
+		{
+			al_draw_bitmap(okno1_4, okno1_4_x, 0, NULL);
+			al_draw_bitmap(podloga1, okno1_4_x + 0, 335, NULL);
+			al_draw_bitmap(krzeslo1_1, okno1_4_x + 1095, 221 + 63, NULL);
+			al_draw_bitmap(krzeslo1_1, okno1_4_x + 1275, 221 + 63, NULL);
+			al_draw_bitmap(krzeslo1_2, okno1_4_x + 1388, 221 + 63, NULL);
+			al_draw_bitmap(stol1, okno1_4_x + 1524, 240 + 63, NULL);
+			al_draw_bitmap(stol1, okno1_4_x + 1847, 240 + 63, NULL);
+
+			al_draw_bitmap(wrog1, okno1_4_x + 1448, 234 + 63, NULL);
+			al_draw_bitmap(wrog1, okno1_4_x + 1489, 182 + 63, NULL);
+			al_draw_bitmap(wrog1, okno1_4_x + 1586, 201 + 63, NULL);
+			al_draw_bitmap(wrog1, okno1_4_x + 1790, 234 + 63, NULL);
+
+			al_draw_bitmap(postac1, postac_x = 0, postac_y, NULL);
+
+			//...................................................................KOLIZJE
+
+			postac_y = postac_y + 7; //...........gravity
+			if (postac_y >= 330 - 72 && postac_x >= 0 && postac_x <= 2230)    //podloga
+				postac_y = 330 - 72;
+
+			if (okno1_4_x > 0)
+			{
+				okno1_4_x;
+			}
+
+			if (postac_x == 640) ///////////////...................................przejscie do kolejnego okna
+			{
+				nowagra1_4_on = 0;
+				nowagra1_5_on = 1;
+			}
+		}
+
+		if (nowagra1_5_on == 1)
+		{
+			al_draw_bitmap(okno1_5, okno1_5_x, 0, NULL);
+			al_draw_bitmap(podloga1, okno1_5_x + 0, 335, NULL);
+			al_draw_bitmap(krzeslo1_2, okno1_5_x + 2004, 221 + 63, NULL);
+			al_draw_bitmap(stol1, okno1_5_x + 1524, 240 + 63, NULL);
+
+			al_draw_bitmap(wrog1, okno1_5_x + 1899, 201 + 63, NULL);
+			al_draw_bitmap(wrog2, okno1_5_x + 2163, 197 + 63, NULL);
+
+			al_draw_bitmap(lutnia1, okno1_5_x + 2201, 237 + 63, NULL);
+
+			al_draw_bitmap(postac1, postac_x = 0, postac_y, NULL);
 		
+			//...................................................................KOLIZJE
+
+			postac_y = postac_y + 7; //...........gravity
+			if (postac_y >= 330 - 72 && postac_x >= 0 && postac_x <= 2230)    //podloga
+				postac_y = 330 - 72;
+
+			if (okno1_5_x > 0)
+			{
+				okno1_5_x;
+			}
+
+			if (postac_x == okno1_5_x + 2201) ///////////////...................................przejscie do kolejnego okna
+			{
+				nowagra1_5_on = 0;
+				menu_on = 1;
+			}
+		}
+
+			//wymiary postaci x=38 y=77
+
+
+
+			//umieścić przejście do kolejnego poziomu zanim przejdzie za obszar mapy
+
+			//	if (postac_y <=150)
+			//		postac_y = 150;
+
+			//if (postac_y >= 150 && postac_y <= 330 - 72) //grawitacja
+			
+			//okno_x -= 2;											    	// poruszanie okna
+			//postac_x -= 2;													// i postaci
+
+			/*
+			if (okno_x <= postac_x)
+			{
+			nowagra1_on = 0;
+			menu_on = 1;
+			}
+			*/
+			//Kolizje
+			
+
+			//if (((postac_y >= 254 || postac_y + 77 >= 254) && (postac_y <= 254 + 55 || postac_y + 77 <= 254 + 55)) && ((postac_x >= 422 || postac_x + 38 >= 422) && (postac_x >= 422 + 22 || postac_x + 38 <= 422 + 22))) //krzeslo
+			//postac_x = 422 - 38;
+
+
 
 			/*
 			if (postac_y >= 254 && postac_x >= 0 && postac_x <= 2230) //podloga
-				postac_y = 254;
+			postac_y = 254;
 			if (postac_y >= 254 && postac_x >= 0 && postac_x <= 2230) //podloga
-				postac_y = 254;
+			postac_y = 254;
 			if (postac_y >= 254 && postac_x >= 0 && postac_x <= 2230) //podloga
-				postac_y = 254;
+			postac_y = 254;
 			if (postac_y >= 254 && postac_x >= 0 && postac_x <= 2230) //podloga
-				postac_y = 254;
+			postac_y = 254;
 			if (postac_y >= 254 && postac_x >= 0 && postac_x <= 2230) //podloga
-				postac_y = 254;
+			postac_y = 254;
 			if (postac_y >= 254 && postac_x >= 0 && postac_x <= 2230) //podloga
-				postac_y = 254;
+			postac_y = 254;
 			if (postac_y >= 254 && postac_x >= 0 && postac_x <= 2230) //podloga
-				postac_y = 254;
+			postac_y = 254;
 			if (postac_y >= 254 && postac_x >= 0 && postac_x <= 2230) //podloga
-				postac_y = 254;
+			postac_y = 254;
 			if (postac_y >= 254 && postac_x >= 0 && postac_x <= 2230) //podloga
-				postac_y = 254;
+			postac_y = 254;
 			if (postac_y >= 254 && postac_x >= 0 && postac_x <= 2230) //podloga
-				postac_y = 254;
+			postac_y = 254;
 			if (postac_y >= 330 - 72 && postac_x >= 0 && postac_x <= 2230) //podloga
-				postac_y = 330 - 72;
+			postac_y = 330 - 72;
 			if (postac_y >= 330 - 72 && postac_x >= 0 && postac_x <= 2230) //podloga
-				postac_y = 330 - 72;
+			postac_y = 330 - 72;
 			if (postac_y >= 330 - 72 && postac_x >= 0 && postac_x <= 2230) //podloga
-				postac_y = 330 - 72;
+			postac_y = 330 - 72;
 			if (postac_y >= 330 - 72 && postac_x >= 0 && postac_x <= 2230) //podloga
-				postac_y = 330 - 72;
+			postac_y = 330 - 72;
 			if (postac_y >= 330 - 72 && postac_x >= 0 && postac_x <= 2230) //podloga
-				postac_y = 330 - 72;
+			postac_y = 330 - 72;
 			if (postac_y >= 330 - 72 && postac_x >= 0 && postac_x <= 2230) //podloga
-				postac_y = 330 - 72;
+			postac_y = 330 - 72;
 			if (postac_y >= 330 - 72 && postac_x >= 0 && postac_x <= 2230) //podloga
-				postac_y = 330 - 72;
+			postac_y = 330 - 72;
 			if (postac_y >= 330 - 72 && postac_x >= 0 && postac_x <= 2230) //podloga
-				postac_y = 330 - 72;
+			postac_y = 330 - 72;
 			if (postac_y >= 330 - 72 && postac_x >= 0 && postac_x <= 2230) //podloga
-				postac_y = 330 - 72;
+			postac_y = 330 - 72;
 			if (postac_y >= 330 - 72 && postac_x >= 0 && postac_x <= 2230) //podloga
-				postac_y = 330 - 72;
+			postac_y = 330 - 72;
 			if (postac_y >= 330 - 72 && postac_x >= 0 && postac_x <= 2230) //podloga
-				postac_y = 330 - 72;
+			postac_y = 330 - 72;
 			if (postac_y >= 330 - 72 && postac_x >= 0 && postac_x <= 2230) //podloga
-				postac_y = 330 - 72;
-		*/
-		}
+			postac_y = 330 - 72;
+			*/
 		if (nowagra3_on == 1)
 		{
 			al_draw_bitmap(okno3, 0, 0, NULL);
@@ -470,7 +932,7 @@ int main()
 						menu_on = 1;
 					}
 				}
-		}	
+		}
 		//////////////////////////////////// EVENTY PO KLIKNIĘCIU WCZYTAJ POZIOM
 		if (wczytajpoziom_on == 1)
 		{
@@ -505,7 +967,11 @@ int main()
 	al_destroy_bitmap(autorzy);
 
 	al_destroy_bitmap(postac1);
-	al_destroy_bitmap(okno1);
+	al_destroy_bitmap(okno1_1);
+	al_destroy_bitmap(okno1_2);
+	al_destroy_bitmap(okno1_3);
+	al_destroy_bitmap(okno1_4);
+	al_destroy_bitmap(okno1_5);
 	al_destroy_bitmap(karczmarz1);
 	al_destroy_bitmap(stol1);
 	al_destroy_bitmap(krzeslo1_1);
@@ -515,25 +981,25 @@ int main()
 	al_destroy_bitmap(podloga1);
 
 	al_destroy_bitmap(okno3);
-	al_destroy_bitmap (podloga3_1);
-	al_destroy_bitmap (podloga3_2);
-	al_destroy_bitmap (podloga3_3);
-	al_destroy_bitmap (podloga3_4);
-	al_destroy_bitmap (podloga3_5);
-	al_destroy_bitmap (podloga3_6);
-	al_destroy_bitmap (podloga3_7);
-	al_destroy_bitmap (podloga3_8);
-	al_destroy_bitmap (polka3_1);
-	al_destroy_bitmap (polka3_2);
+	al_destroy_bitmap(podloga3_1);
+	al_destroy_bitmap(podloga3_2);
+	al_destroy_bitmap(podloga3_3);
+	al_destroy_bitmap(podloga3_4);
+	al_destroy_bitmap(podloga3_5);
+	al_destroy_bitmap(podloga3_6);
+	al_destroy_bitmap(podloga3_7);
+	al_destroy_bitmap(podloga3_8);
+	al_destroy_bitmap(polka3_1);
+	al_destroy_bitmap(polka3_2);
 	al_destroy_bitmap(artefakt3_1);
 
-	al_destroy_bitmap(wrog1); 
-	al_destroy_bitmap(wrog2); 
-	al_destroy_bitmap(wrog3); 
-	al_destroy_bitmap(wrog4); 
-	al_destroy_bitmap(szafa); 
-	al_destroy_bitmap(lampa); 
-	al_destroy_bitmap(brama); 
+	al_destroy_bitmap(wrog1);
+	al_destroy_bitmap(wrog2);
+	al_destroy_bitmap(wrog3);
+	al_destroy_bitmap(wrog4);
+	al_destroy_bitmap(szafa);
+	al_destroy_bitmap(lampa);
+	al_destroy_bitmap(brama);
 
-return 0;
-}			
+	return 0;
+}
