@@ -1,7 +1,8 @@
 #include <allegro5\allegro.h>
 #include <allegro5\allegro_image.h>
 #include <allegro5\allegro_primitives.h>
-#include <time.h>
+#include <cstdio>
+#include <ctime>
 
 int collision(int b1_x, int b1_y, int b1_w, int b1_h, int b2_x, int b2_y, int b2_w, int b2_h)
 {
@@ -45,6 +46,7 @@ int main()
 	ALLEGRO_BITMAP *bar1 = NULL;
 	ALLEGRO_BITMAP *lutnia1 = NULL;
 	ALLEGRO_BITMAP *smierc = NULL;
+	ALLEGRO_BITMAP *koniec_ekranu = NULL;
 
 	ALLEGRO_BITMAP *okno1_2 = NULL;
 
@@ -52,7 +54,9 @@ int main()
 	ALLEGRO_BITMAP *okno1_4 = NULL;
 	ALLEGRO_BITMAP *okno1_5 = NULL;
 
+	ALLEGRO_BITMAP *zakonczenie = NULL;
 
+	ALLEGRO_BITMAP *koniec = NULL;
 	//ALLEGRO_BITMAP *okno2 = NULL;
 
 	ALLEGRO_BITMAP *okno3 = NULL;
@@ -78,6 +82,11 @@ int main()
 	ALLEGRO_BITMAP *lampa = NULL;
 	ALLEGRO_BITMAP *brama = NULL;
 
+	ALLEGRO_BITMAP *poczatek_1 = NULL;
+	ALLEGRO_BITMAP *poczatek_2 = NULL;
+	ALLEGRO_BITMAP *poczatek_3 = NULL;
+	ALLEGRO_BITMAP *poczatek_4 = NULL;
+	ALLEGRO_BITMAP *poczatek_5 = NULL;
 
 
 	al_init();
@@ -113,6 +122,13 @@ int main()
 
 	postac1 = al_load_bitmap("postac1.png");
 
+	poczatek_1 = al_load_bitmap("poczatek_1.png");
+	poczatek_2 = al_load_bitmap("poczatek_2.png");
+	poczatek_3 = al_load_bitmap("poczatek_3.png");
+	poczatek_4 = al_load_bitmap("poczatek_4.png");
+	poczatek_5 = al_load_bitmap("poczatek_5.png");
+
+
 	okno1_1 = al_load_bitmap("okno1_1.png");
 	okno1_2 = al_load_bitmap("okno1_2.png");
 	okno1_3 = al_load_bitmap("okno1_3.png");
@@ -124,7 +140,8 @@ int main()
 	krzeslo1_2 = al_load_bitmap("krzeslo2.png");
 	bar1 = al_load_bitmap("bar.png");
 	lutnia1 = al_load_bitmap("lutnia.png");
-
+	koniec_ekranu = al_load_bitmap("koniec_ekranu.png");
+	koniec = al_load_bitmap("koniec_1.png");
 	//okno2 = al_load_bitmap("okno2.png");
 
 	okno3 = al_load_bitmap("okno3.png");
@@ -156,12 +173,20 @@ int main()
 	int height = al_get_display_height(display);
 
 
+
 	int menu_on = 1;
 	int nowagra1_1_on = 0; //poziom 1.1
 	int nowagra1_2_on = 0;
 	int nowagra1_3_on = 0;
 	int nowagra1_4_on = 0;
 	int nowagra1_5_on = 0;
+	int koniec_on = 0;
+
+	int poczatek_1_on = 0;
+	int poczatek_2_on = 0;
+	int poczatek_3_on = 0;
+	int poczatek_4_on = 0;
+	int poczatek_5_on = 0;
 						 //	int nowagra2_on = 0; //2
 	int nowagra3_on = 0; //3
 	int autorzy_on = 0;
@@ -172,6 +197,17 @@ int main()
 
 	int x = 10, y = 10, moveSpeed = 5; //myszka
 
+	int koniec_ekranu_x = 640;
+	int koniec_ekranu_y = 0;
+	int koniec_ekranu_w = 1;
+	int koniec_ekranu_h = 480;
+
+
+	int koniec_gry_x = 310;
+	int koniec_gry_y = 0;
+	int koniec_gry_w = 1;
+	int koniec_gry_h = 480;
+
 	int postac_x = 265; //klawiatura
 	int postac_y = 257;
 	int postac_w = 38;
@@ -181,14 +217,9 @@ int main()
 	int okno1_1_x = 0; //........................POZIOM 1 OKNO 1
 	
 	//fazy skoku
-	int faza_skoku = 1; // 0 =stoi 1 = leci 2 = spada
+	int faza_skoku = 0; // 0 =stoi 1 = leci 2 = spada
 
 	int obiekt[30][4];
-
-
-
-	time_t poczatek_skoku = 0;
-
 
 	int krzeslo_w = 22;
 	int krzeslo_h = 53;
@@ -212,6 +243,9 @@ int main()
 
 	int przeciwnik1_w=24;
 	int przeciwnik1_h=38;
+
+	int przeciwnik2_w = 31;
+	int przeciwnik2_h = 76;
 
 	int przeciwnik1_1_x= 420;
 	int przeciwnik1_1_y= 182 + 63;
@@ -259,10 +293,77 @@ int main()
 
 	int okno1_3_x = 0; //..........................POZIOM 1 OKNO 3 
 
+	int krzeslo1_3_1_x = okno1_3_x -5;
+	int krzeslo1_3_1_y = 221 + 63;
+
+
+	int krzeslo1_3_2_x = okno1_3_x + 213;
+	int krzeslo1_3_2_y = 221 + 63;
+
+	int krzeslo1_3_3_x = okno1_3_x + 452;
+	int krzeslo1_3_3_y = 221 + 63;
+
+
+	int stol1_3_x = okno1_3_x + 245;
+	int stol1_3_y = 301;
+
+	int stol1_4_x = okno1_3_x + 568;
+	int stol1_4_y = 301;
+
+
+	int przeciwnik1_9_x = okno1_3_x + 70;
+	int przeciwnik1_9_y = 297;
+
+	int przeciwnik1_10_x = okno1_3_x + 140;
+	int przeciwnik1_10_y = 297;
+
+	int przeciwnik1_11_x = okno1_3_x + 510;
+	int przeciwnik1_11_y = 297;
+
+	int przeciwnik1_12_x = okno1_3_x + 213;
+	int przeciwnik1_12_y = 244;
+
+	int przeciwnik1_13_x = okno1_3_x + 452;
+	int przeciwnik1_13_y = 244;
+
+	int przeciwnik1_14_x = okno1_3_x + 300;
+	int przeciwnik1_14_y = 262;
+
+
+
+
 	int okno1_4_x = 0; //..........................POZIOM 1 OKNO 4
 
-	int okno1_5_x = 0; //..........................POZIOM 1 OKNO 5
+	int stol1_5_x = okno1_4_x - 64;
+	int stol1_5_y = 301;
 
+
+	int przeciwnik1_15_x = okno1_4_x + 80;
+	int przeciwnik1_15_y = 297;
+
+	int przeciwnik2_1_x = okno1_4_x + 140;
+	int przeciwnik2_1_y = 258;
+
+	int lutnia_x = okno1_4_x + 250;
+	int lutnia_y = 258+36;
+
+	int lutnia_w = 37;
+	int lutnia_h = 36;
+
+	int wczytaj_poziom_w = 30;
+	int wczytaj_poziom_h = 40;
+
+	int wczytaj_poziom_1_x = 270;
+	int wczytaj_poziom_1_y = 280;
+
+	int wczytaj_poziom_2_x = 290;
+	int wczytaj_poziom_2_y = 280;
+
+	int wczytaj_poziom_3_x = 330;
+	int wczytaj_poziom_3_y = 280;
+
+	int wczytaj_poziom_4_x = 365;
+	int wczytaj_poziom_4_y = 280;
 
 	while (running)
 
@@ -298,27 +399,8 @@ int main()
 
 		if (al_key_down(&keyState, ALLEGRO_KEY_UP))
 		{
-			if (faza_skoku == 0 || faza_skoku == 1)
-			{
-				postac_y += -szybkosc_postaci * 4; //jump
-				if (poczatek_skoku == 0)
-				{
-					poczatek_skoku = clock();
-					faza_skoku = 1;
-				}
-			}
+				postac_y += -szybkosc_postaci * 4; //jump	
 		}
-		if (!al_key_down(&keyState, ALLEGRO_KEY_UP)&& faza_skoku!=0)
-		{
-			faza_skoku = 2;
-		}
-		time_t actual = clock();
-		float roznica_czasu =(float)(actual - poczatek_skoku)/CLOCKS_PER_SEC;
-		if (roznica_czasu >= 0.15)
-		{
-			faza_skoku = 2;
-		}
-		if (faza_skoku = 1)
 
 		if (al_key_down(&keyState, ALLEGRO_KEY_SPACE))
 			//postac_y //atak
@@ -386,6 +468,86 @@ int main()
 				}
 			}
 		}
+	/*	if (poczatek_1_on == 1)
+		{
+			al_draw_bitmap(poczatek_1, 0, 0, NULL);
+			if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+			{
+				if (event.mouse.button & 1)
+				{
+					poczatek_1_on == 0;
+					poczatek_2_on == 1;
+
+				}
+			}
+		}
+		if (poczatek_2_on == 1)
+		{
+			al_draw_bitmap(poczatek_2, 0, 0, NULL);
+			if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+			{
+				if (event.mouse.button & 1)
+				{
+					poczatek_2_on == 0;
+					poczatek_3_on == 1;
+
+				}
+			}
+		}
+		if (poczatek_3_on  == 1)
+		{
+			al_draw_bitmap(poczatek_3, 0, 0, NULL);
+			if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+			{
+				if (event.mouse.button & 1)
+				{
+					poczatek_3_on == 0;
+					poczatek_4_on == 1;
+
+				}
+			}
+		}
+		if (poczatek_4_on == 1)
+		{
+			al_draw_bitmap(poczatek_4, 0, 0, NULL);
+			if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+			{
+				if (event.mouse.button & 1)
+				{
+					poczatek_4_on == 0;
+					poczatek_5_on == 1;
+
+				}
+			}
+		}
+		if (poczatek_5_on == 1)
+		{
+			al_draw_bitmap(poczatek_5, 0, 0, NULL);
+			if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+			{
+				if (event.mouse.button & 1)
+				{
+					poczatek_5_on == 0;
+					nowagra1_1_on == 1;
+					postac_x = 265;
+					postac_y = 257;
+				}
+			}
+		} */
+		if (koniec_on == 1)
+		{
+			al_draw_bitmap(koniec, 0, 0, NULL);
+			if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+			{
+				if (event.mouse.button & 1)
+				{
+					koniec_on = 0;
+					menu_on = 1;
+					postac_x = 265;
+					postac_y = 257;
+				}
+			}
+		}
 		//////////////////////////////////// EVENTY PO KLIKNIĘCIU NOWEJ GRY
 		if (nowagra1_1_on == 1)
 		{
@@ -396,6 +558,7 @@ int main()
 			al_draw_bitmap(krzeslo1_1, okno1_1_x + 422, 221 + 63, NULL); 
 			al_draw_bitmap(wrog1, okno1_1_x + 420, 182 + 63, NULL);
 			al_draw_bitmap(wrog1, przeciwnik1_2_x, przeciwnik1_2_y, NULL);
+			al_draw_bitmap(koniec_ekranu, 640, przeciwnik1_2_y, NULL);
 
 			al_draw_bitmap(postac1, postac_x, postac_y, NULL);
 			//................................................................................KOLIZJE
@@ -403,6 +566,17 @@ int main()
 
 			if (postac_y >= 330 - 72 && postac_x >= 0 && postac_x <= 2230)    //podloga
 				postac_y = 330 - 72;
+
+			if (collision(postac_x, postac_y, postac_w, postac_h, koniec_ekranu_x, koniec_ekranu_y, koniec_ekranu_w, koniec_ekranu_h)) //koniec ekranu
+			{
+				nowagra1_1_on = 0;
+				nowagra1_2_on = 1;
+			}
+			if (!collision(postac_x, postac_y, postac_w, postac_h, koniec_ekranu_x, koniec_ekranu_y, koniec_ekranu_w, koniec_ekranu_h))
+			{
+				szybkosc_postaci = 4;
+			}
+
 
 			if (collision(postac_x, postac_y, postac_w, postac_h, krzeslo1_1_1_x, krzeslo1_1_1_y, krzeslo_w, krzeslo_h)) //krzeslo1
 			{
@@ -476,11 +650,11 @@ int main()
 				okno1_1_x;
 			}
 			
-			if (postac_x - 265 == 640) ///////////////...................................przejscie do kolejnego okna
-			{
-				nowagra1_1_on = 0;
-				nowagra1_2_on = 1;
-			}
+			//if (postac_x - 265 == 640) ///////////////...................................przejscie do kolejnego okna
+		//	{
+		//		nowagra1_1_on = 0;
+		//		nowagra1_2_on = 1;
+		//	}
 		}
 		////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 		if (nowagra1_2_on == 1) //.........................................OKNO 1.2
@@ -500,56 +674,66 @@ int main()
 			al_draw_bitmap(wrog1, okno1_2_x + 450, 335-krzeslo_h - przeciwnik1_h, NULL);
 			al_draw_bitmap(wrog1, okno1_2_x + 550, 335 - przeciwnik1_h, NULL);
 
-			al_draw_bitmap(postac1, postac_x - 265, postac_y, NULL);
+			al_draw_bitmap(postac1, postac_x-600, postac_y, NULL);
 			//......................................................................................KOLIZJE
 			postac_y = postac_y + 7; //...........gravity
 
 			if (postac_y >= 330 - 72 && postac_x >= 0 && postac_x <= 2230)    //podloga
 				postac_y = 330 - 72;
 
-			if (collision(postac_x - 265, postac_y, postac_w, postac_h, krzeslo1_2_1_x, krzeslo1_2_1_y, krzeslo_w, krzeslo_h)) //krzeslo1
+			if (collision(postac_x - 600, postac_y, postac_w, postac_h, koniec_ekranu_x, koniec_ekranu_y, koniec_ekranu_w, koniec_ekranu_h)) //koniec ekranu
+			{
+				nowagra1_2_on = 0;
+				nowagra1_3_on = 1;
+			}
+			if (!collision(postac_x - 600, postac_y, postac_w, postac_h, koniec_ekranu_x, koniec_ekranu_y, koniec_ekranu_w, koniec_ekranu_h))
+			{
+				szybkosc_postaci = 4;
+			}
+
+			if (collision(postac_x - 600, postac_y, postac_w, postac_h, krzeslo1_2_1_x, krzeslo1_2_1_y, krzeslo_w, krzeslo_h)) //krzeslo1
 			{
 				szybkosc_postaci = 0.00001;
 				postac_y = postac_y - 7;
 
 			}
-			if (!collision(postac_x - 265, postac_y, postac_w, postac_h, krzeslo1_2_1_x, krzeslo1_2_1_y, krzeslo_w, krzeslo_h))
+			if (!collision(postac_x - 600, postac_y, postac_w, postac_h, krzeslo1_2_1_x, krzeslo1_2_1_y, krzeslo_w, krzeslo_h))
 			{
 				szybkosc_postaci = 4;
 			}
-			if (collision(postac_x - 265, postac_y, postac_w, postac_h, krzeslo1_2_2_x, krzeslo1_2_2_y, krzeslo_w, krzeslo_h)) //krzeslo2
+			if (collision(postac_x - 600, postac_y, postac_w, postac_h, krzeslo1_2_2_x, krzeslo1_2_2_y, krzeslo_w, krzeslo_h)) //krzeslo2
 			{
 				szybkosc_postaci = 0.00001;
 				postac_y = postac_y - 7;
 
 			}
-			if (!collision(postac_x - 265, postac_y, postac_w, postac_h, krzeslo1_2_2_x, krzeslo1_2_2_y, krzeslo_w, krzeslo_h))
+			if (!collision(postac_x - 600, postac_y, postac_w, postac_h, krzeslo1_2_2_x, krzeslo1_2_2_y, krzeslo_w, krzeslo_h))
 			{
 				szybkosc_postaci = 4;
 			}
-			if (collision(postac_x - 265, postac_y, postac_w, postac_h, krzeslo1_2_3_x, krzeslo1_2_3_y, krzeslo_w, krzeslo_h)) //krzeslo3
+			if (collision(postac_x - 600, postac_y, postac_w, postac_h, krzeslo1_2_3_x, krzeslo1_2_3_y, krzeslo_w, krzeslo_h)) //krzeslo3
 			{
 				szybkosc_postaci = 0.00001;
 				postac_y = postac_y - 7;
 
 			}
-			if (!collision(postac_x - 265, postac_y, postac_w, postac_h, krzeslo1_2_3_x, krzeslo1_2_3_y, krzeslo_w, krzeslo_h))
+			if (!collision(postac_x - 600, postac_y, postac_w, postac_h, krzeslo1_2_3_x, krzeslo1_2_3_y, krzeslo_w, krzeslo_h))
 			{
 				szybkosc_postaci = 4;
 			}
 
-			if (collision(postac_x - 265, postac_y, postac_w, postac_h, stol1_2_x, stol1_2_y, stol_w, stol_h)) //stol1
+			if (collision(postac_x - 600, postac_y, postac_w, postac_h, stol1_2_x, stol1_2_y, stol_w, stol_h)) //stol1
 			{
 				szybkosc_postaci = 0.00001;
 				postac_y = postac_y - 7;
 
 			}
-			if (!collision(postac_x - 265, postac_y, postac_w, postac_h, stol1_2_x, stol1_2_y, stol_w, stol_h))
+			if (!collision(postac_x - 600, postac_y, postac_w, postac_h, stol1_2_x, stol1_2_y, stol_w, stol_h))
 			{
 				szybkosc_postaci = 4;
 			}
 
-			if (collision(postac_x - 265, postac_y, postac_w, postac_h, przeciwnik1_3_x, przeciwnik1_3_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik1
+			if (collision(postac_x - 600, postac_y, postac_w, postac_h, przeciwnik1_3_x, przeciwnik1_3_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik1
 			{
 				al_draw_bitmap(smierc, 0, 0, NULL); // 	
 				szybkosc_postaci = 0;
@@ -557,7 +741,7 @@ int main()
 				{
 					if (event.mouse.button & 1)
 					{
-						nowagra1_1_on = 0;
+						nowagra1_2_on = 0;
 						menu_on = 1;
 						postac_x = 265;
 						postac_y = 257;
@@ -565,7 +749,7 @@ int main()
 				}
 			}
 
-			if (collision(postac_x - 265, postac_y, postac_w, postac_h, przeciwnik1_4_x, przeciwnik1_4_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik2
+			if (collision(postac_x - 600, postac_y, postac_w, postac_h, przeciwnik1_4_x, przeciwnik1_4_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik2
 			{
 				al_draw_bitmap(smierc, 0, 0, NULL); // 
 				szybkosc_postaci = 0;
@@ -573,7 +757,7 @@ int main()
 				{
 					if (event.mouse.button & 1)
 					{
-						nowagra1_1_on = 0;
+						nowagra1_2_on = 0;
 						menu_on = 1;
 						postac_x = 265;
 						postac_y = 257;
@@ -581,7 +765,7 @@ int main()
 					}
 				}
 			}
-			if (collision(postac_x - 265, postac_y, postac_w, postac_h, przeciwnik1_5_x, przeciwnik1_5_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik3
+			if (collision(postac_x - 600, postac_y, postac_w, postac_h, przeciwnik1_5_x, przeciwnik1_5_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik3
 			{
 				al_draw_bitmap(smierc, 0, 0, NULL); // 	
 				szybkosc_postaci = 0;
@@ -589,7 +773,7 @@ int main()
 				{
 					if (event.mouse.button & 1)
 					{
-						nowagra1_1_on = 0;
+						nowagra1_2_on = 0;
 						menu_on = 1;
 						postac_x = 265;
 						postac_y = 257;
@@ -597,7 +781,7 @@ int main()
 				}
 			}
 
-			if (collision(postac_x - 265, postac_y, postac_w, postac_h, przeciwnik1_6_x, przeciwnik1_6_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik4
+			if (collision(postac_x - 600, postac_y, postac_w, postac_h, przeciwnik1_6_x, przeciwnik1_6_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik4
 			{
 				al_draw_bitmap(smierc, 0, 0, NULL); // 	
 				szybkosc_postaci = 0;
@@ -605,7 +789,7 @@ int main()
 				{
 					if (event.mouse.button & 1)
 					{
-						nowagra1_1_on = 0;
+						nowagra1_2_on = 0;
 						menu_on = 1;
 						postac_x = 265;
 						postac_y = 257;
@@ -613,7 +797,7 @@ int main()
 				}
 			}
 
-			if (collision(postac_x - 265, postac_y, postac_w, postac_h, przeciwnik1_7_x, przeciwnik1_7_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik5
+			if (collision(postac_x - 600, postac_y, postac_w, postac_h, przeciwnik1_7_x, przeciwnik1_7_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik5
 			{
 				al_draw_bitmap(smierc, 0, 0, NULL); // 	
 				szybkosc_postaci = 0;
@@ -621,7 +805,7 @@ int main()
 				{
 					if (event.mouse.button & 1)
 					{
-						nowagra1_1_on = 0;
+						nowagra1_2_on = 0;
 						menu_on = 1;
 						postac_x = 265;
 						postac_y = 257;
@@ -629,7 +813,7 @@ int main()
 				}
 			}
 
-			if (collision(postac_x - 265, postac_y, postac_w, postac_h, przeciwnik1_8_x, przeciwnik1_8_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik6
+			if (collision(postac_x - 600, postac_y, postac_w, postac_h, przeciwnik1_8_x, przeciwnik1_8_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik6
 			{
 				al_draw_bitmap(smierc, 0, 0, NULL); // 	
 				szybkosc_postaci = 0;
@@ -637,7 +821,7 @@ int main()
 				{
 					if (event.mouse.button & 1)
 					{
-						nowagra1_1_on = 0;
+						nowagra1_2_on = 0;
 						menu_on = 1;
 						postac_x = 265;
 						postac_y = 257;
@@ -652,12 +836,7 @@ int main()
 				okno1_2_x;
 			}
 
-			if (postac_x - 265 == 640) ///////////////...................................przejscie do kolejnego okna
-			{
-				nowagra1_2_on = 0;
-				nowagra1_3_on = 1;
-			}
-		}
+		}///////////////////////////////////////////////////////////////////////////////
 		if (nowagra1_3_on == 1) //.........................................OKNO 1.3
 		{
 
@@ -669,12 +848,14 @@ int main()
 			al_draw_bitmap(krzeslo1_2, okno1_3_x + 996, 221 + 63, NULL); //4
 			al_draw_bitmap(stol1, okno1_3_x + 1524, 240 + 63, NULL);
 
-			al_draw_bitmap(wrog1, okno1_3_x + 1042, 234 + 63, NULL);
-			al_draw_bitmap(wrog1, okno1_3_x + 1094, 182 + 63, NULL);
-			al_draw_bitmap(wrog1, okno1_3_x + 1185, 234 + 63, NULL);
-			al_draw_bitmap(wrog1, okno1_3_x + 1326, 234 + 63, NULL);
+			al_draw_bitmap(wrog1, okno1_3_x + przeciwnik1_9_x, 297, NULL);
+			al_draw_bitmap(wrog1, okno1_3_x + przeciwnik1_10_x, 297, NULL);
+			al_draw_bitmap(wrog1, okno1_3_x + przeciwnik1_11_x, 297, NULL);
+			al_draw_bitmap(wrog1, okno1_3_x + przeciwnik1_12_x, 244, NULL);
+			al_draw_bitmap(wrog1, okno1_3_x + przeciwnik1_13_x, 244, NULL);
+			al_draw_bitmap(wrog1, okno1_3_x + przeciwnik1_14_x, 262, NULL);
 
-			al_draw_bitmap(postac1, postac_x = 0, postac_y, NULL);
+			al_draw_bitmap(postac1, postac_x - 1200, postac_y, NULL);
 
 			//...................................................................KOLIZJE
 
@@ -682,35 +863,180 @@ int main()
 
 			if (postac_y >= 330 - 72 && postac_x >= 0 && postac_x <= 2230)    //podloga
 				postac_y = 330 - 72;
+
+			if (collision(postac_x - 1200, postac_y, postac_w, postac_h, koniec_ekranu_x, koniec_ekranu_y, koniec_ekranu_w, koniec_ekranu_h)) //koniec ekranu
+			{
+				nowagra1_3_on = 0;
+				nowagra1_4_on = 1;
+			}
+			if (collision(postac_x - 600, postac_y, postac_w, postac_h, krzeslo1_3_1_x, krzeslo1_3_1_y, krzeslo_w, krzeslo_h)) //krzeslo1
+			{
+				szybkosc_postaci = 0.00001;
+				postac_y = postac_y - 7;
+
+			}
+			if (!collision(postac_x - 1200, postac_y, postac_w, postac_h, krzeslo1_3_1_x, krzeslo1_3_1_y, krzeslo_w, krzeslo_h))
+			{
+				szybkosc_postaci = 4;
+			}
+			if (collision(postac_x - 1200, postac_y, postac_w, postac_h, krzeslo1_3_2_x, krzeslo1_3_2_y, krzeslo_w, krzeslo_h)) //krzeslo2
+			{
+				szybkosc_postaci = 0.00001;
+				postac_y = postac_y - 7;
+
+			}
+			if (!collision(postac_x - 1200, postac_y, postac_w, postac_h, krzeslo1_3_2_x, krzeslo1_3_2_y, krzeslo_w, krzeslo_h))
+			{
+				szybkosc_postaci = 4;
+			}
+			if (collision(postac_x - 1200, postac_y, postac_w, postac_h, krzeslo1_3_3_x, krzeslo1_3_3_y, krzeslo_w, krzeslo_h)) //krzeslo3
+			{
+				szybkosc_postaci = 0.00001;
+				postac_y = postac_y - 7;
+
+			}
+			if (!collision(postac_x - 1200, postac_y, postac_w, postac_h, krzeslo1_3_3_x, krzeslo1_3_3_y, krzeslo_w, krzeslo_h))
+			{
+				szybkosc_postaci = 4;
+			}
+
+			if (collision(postac_x - 1200, postac_y, postac_w, postac_h, stol1_3_x, stol1_3_y, stol_w, stol_h)) //stol1
+			{
+				szybkosc_postaci = 0.00001;
+				postac_y = postac_y - 7;
+
+			}
+			if (!collision(postac_x - 1200, postac_y, postac_w, postac_h, stol1_3_x, stol1_3_y, stol_w, stol_h))
+			{
+				szybkosc_postaci = 4;
+			}
+			if (collision(postac_x - 1200, postac_y, postac_w, postac_h, stol1_4_x, stol1_4_y, stol_w, stol_h)) //stol2
+			{
+				szybkosc_postaci = 0.00001;
+				postac_y = postac_y - 7;
+
+			}
+			if (!collision(postac_x - 1200, postac_y, postac_w, postac_h, stol1_4_x, stol1_4_y, stol_w, stol_h))
+			{
+				szybkosc_postaci = 4;
+			}
+
+			if (collision(postac_x - 1200, postac_y, postac_w, postac_h, przeciwnik1_9_x, przeciwnik1_9_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik1
+			{
+				al_draw_bitmap(smierc, 0, 0, NULL); // 
+				szybkosc_postaci = 0;
+				if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+				{
+					if (event.mouse.button & 1)
+					{
+						nowagra1_3_on = 0;
+						menu_on = 1;
+						postac_x = 265;
+						postac_y = 257;
+
+					}
+				}
+			}
+			if (collision(postac_x - 1200, postac_y, postac_w, postac_h, przeciwnik1_10_x, przeciwnik1_10_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik2
+			{
+				al_draw_bitmap(smierc, 0, 0, NULL); // 
+				szybkosc_postaci = 0;
+				if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+				{
+					if (event.mouse.button & 1)
+					{
+						nowagra1_3_on = 0;
+						menu_on = 1;
+						postac_x = 265;
+						postac_y = 257;
+
+					}
+				}
+			}
+			if (collision(postac_x - 1200, postac_y, postac_w, postac_h, przeciwnik1_11_x, przeciwnik1_11_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik3
+			{
+				al_draw_bitmap(smierc, 0, 0, NULL); // 
+				szybkosc_postaci = 0;
+				if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+				{
+					if (event.mouse.button & 1)
+					{
+						nowagra1_3_on = 0;
+						menu_on = 1;
+						postac_x = 265;
+						postac_y = 257;
+
+					}
+				}
+			}
+			if (collision(postac_x - 1200, postac_y, postac_w, postac_h, przeciwnik1_12_x, przeciwnik1_12_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik4
+			{
+				al_draw_bitmap(smierc, 0, 0, NULL); // 
+				szybkosc_postaci = 0;
+				if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+				{
+					if (event.mouse.button & 1)
+					{
+						nowagra1_3_on = 0;
+						menu_on = 1;
+						postac_x = 265;
+						postac_y = 257;
+
+					}
+				}
+			}
+			if (collision(postac_x - 1200, postac_y, postac_w, postac_h, przeciwnik1_13_x, przeciwnik1_13_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik5
+			{
+				al_draw_bitmap(smierc, 0, 0, NULL); // 
+				szybkosc_postaci = 0;
+				if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+				{
+					if (event.mouse.button & 1)
+					{
+						nowagra1_3_on = 0;
+						menu_on = 1;
+						postac_x = 265;
+						postac_y = 257;
+
+					}
+				}
+			}
+			if (collision(postac_x - 1200, postac_y, postac_w, postac_h, przeciwnik1_14_x, przeciwnik1_14_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik6
+			{
+				al_draw_bitmap(smierc, 0, 0, NULL); // 
+				szybkosc_postaci = 0;
+				if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+				{
+					if (event.mouse.button & 1)
+					{
+						nowagra1_3_on = 0;
+						menu_on = 1;
+						postac_x = 265;
+						postac_y = 257;
+
+					}
+				}
+			}
 
 			if (okno1_3_x > 0)
 			{
 				okno1_3_x;
 			}
 
-			if (postac_x == 640) ///////////////...................................przejscie do kolejnego okna
-			{
-				nowagra1_3_on = 0;
-				nowagra1_4_on = 1;
-			}
 		}
 
+		///////////////////////////////////////////////////////////////////////////////////////////
 		if (nowagra1_4_on == 1) //.........................................OKNO 1.4
 		{
 			al_draw_bitmap(okno1_4, okno1_4_x, 0, NULL);
 			al_draw_bitmap(podloga1, okno1_4_x + 0, 335, NULL);
-			al_draw_bitmap(krzeslo1_1, okno1_4_x + 1095, 221 + 63, NULL);
-			al_draw_bitmap(krzeslo1_1, okno1_4_x + 1275, 221 + 63, NULL);
-			al_draw_bitmap(krzeslo1_2, okno1_4_x + 1388, 221 + 63, NULL);
-			al_draw_bitmap(stol1, okno1_4_x + 1524, 240 + 63, NULL);
-			al_draw_bitmap(stol1, okno1_4_x + 1847, 240 + 63, NULL);
+			al_draw_bitmap(stol1, okno1_4_x + stol1_5_x, stol1_5_y, NULL);
+			al_draw_bitmap(lutnia1, okno1_4_x + lutnia_x, lutnia_y, NULL);
 
-			al_draw_bitmap(wrog1, okno1_4_x + 1448, 234 + 63, NULL);
-			al_draw_bitmap(wrog1, okno1_4_x + 1489, 182 + 63, NULL);
-			al_draw_bitmap(wrog1, okno1_4_x + 1586, 201 + 63, NULL);
-			al_draw_bitmap(wrog1, okno1_4_x + 1790, 234 + 63, NULL);
+			al_draw_bitmap(wrog1, okno1_4_x + przeciwnik1_15_x, przeciwnik1_15_y, NULL);
+			al_draw_bitmap(wrog2, okno1_4_x + przeciwnik2_1_x, przeciwnik2_1_y, NULL);
 
-			al_draw_bitmap(postac1, postac_x = 0, postac_y, NULL);
+			al_draw_bitmap(postac1, postac_x - 1800, postac_y, NULL);
 
 			//...................................................................KOLIZJE
 
@@ -718,49 +1044,72 @@ int main()
 			if (postac_y >= 330 - 72 && postac_x >= 0 && postac_x <= 2230)    //podloga
 				postac_y = 330 - 72;
 
+			if (collision(postac_x - 1800, postac_y, postac_w, postac_h, koniec_gry_x, koniec_ekranu_y, koniec_gry_w, koniec_ekranu_h)) //koniec ekranu
+			{
+				szybkosc_postaci = 0.0000001;
+				postac_y = postac_y - 7;
+			}
+
+			if (collision(postac_x - 1800, postac_y, postac_w, postac_h, stol1_5_x, stol1_5_y, stol_w, stol_h)) //stol1
+			{
+				szybkosc_postaci = 0.00001;
+				postac_y = postac_y - 7;
+
+			}
+			if (!collision(postac_x - 1800, postac_y, postac_w, postac_h, stol1_5_x, stol1_5_y, stol_w, stol_h))
+			{
+				szybkosc_postaci = 4;
+			}
+
+			if (collision(postac_x - 1800, postac_y, postac_w, postac_h, lutnia_x, lutnia_y, lutnia_w, lutnia_h)) //lutnia1
+			{
+				nowagra1_4_on = 0;
+				koniec_on = 1;
+
+			}
+			if (!collision(postac_x - 1800, postac_y, postac_w, postac_h, lutnia_x, lutnia_y, lutnia_w, lutnia_h))
+			{
+				szybkosc_postaci = 4;
+			}
+
+			if (collision(postac_x - 1800, postac_y, postac_w, postac_h, przeciwnik1_15_x, przeciwnik1_15_y, przeciwnik1_w, przeciwnik1_h)) //przeciwnik5
+			{
+				al_draw_bitmap(smierc, 0, 0, NULL); // 
+				szybkosc_postaci = 0;
+				if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+				{
+					if (event.mouse.button & 1)
+					{
+						nowagra1_4_on = 0;
+						menu_on = 1;
+						postac_x = 265;
+						postac_y = 257;
+
+					}
+				}
+			}
+			if (collision(postac_x - 1800, postac_y, postac_w, postac_h, przeciwnik2_1_x, przeciwnik2_1_y, przeciwnik2_w, przeciwnik2_h)) //przeciwnik6
+			{
+				al_draw_bitmap(smierc, 0, 0, NULL); // 
+				szybkosc_postaci = 0;
+				if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+				{
+					if (event.mouse.button & 1)
+					{
+						nowagra1_4_on = 0;
+						menu_on = 1;
+						postac_x = 265;
+						postac_y = 257;
+
+					}
+				}
+			}
 			if (okno1_4_x > 0)
 			{
 				okno1_4_x;
 			}
-
-			if (postac_x == 640) ///////////////...................................przejscie do kolejnego okna
-			{
-				nowagra1_4_on = 0;
-				nowagra1_5_on = 1;
-			}
 		}
 
-		if (nowagra1_5_on == 1)
-		{
-			al_draw_bitmap(okno1_5, okno1_5_x, 0, NULL);
-			al_draw_bitmap(podloga1, okno1_5_x + 0, 335, NULL);
-			al_draw_bitmap(krzeslo1_2, okno1_5_x + 2004, 221 + 63, NULL);
-			al_draw_bitmap(stol1, okno1_5_x + 1524, 240 + 63, NULL);
-
-			al_draw_bitmap(wrog1, okno1_5_x + 1899, 201 + 63, NULL);
-			al_draw_bitmap(wrog2, okno1_5_x + 2163, 197 + 63, NULL);
-
-			al_draw_bitmap(lutnia1, okno1_5_x + 2201, 237 + 63, NULL);
-
-			al_draw_bitmap(postac1, postac_x = 0, postac_y, NULL);
-		
-			//...................................................................KOLIZJE
-
-			postac_y = postac_y + 7; //...........gravity
-			if (postac_y >= 330 - 72 && postac_x >= 0 && postac_x <= 2230)    //podloga
-				postac_y = 330 - 72;
-
-			if (okno1_5_x > 0)
-			{
-				okno1_5_x;
-			}
-
-			if (postac_x == okno1_5_x + 2201) ///////////////...................................przejscie do kolejnego okna
-			{
-				nowagra1_5_on = 0;
-				menu_on = 1;
-			}
-		}
 
 			//wymiary postaci x=38 y=77
 
@@ -936,6 +1285,7 @@ int main()
 		//////////////////////////////////// EVENTY PO KLIKNIĘCIU WCZYTAJ POZIOM
 		if (wczytajpoziom_on == 1)
 		{
+
 			al_draw_bitmap(wczytajpoziom, 0, 0, NULL);
 			al_draw_rectangle(x, y, x + 10, y + 10, playerColor, 1);
 			if (x > 0 && x < 160 && y >0 && y < 90)
@@ -943,8 +1293,46 @@ int main()
 				{
 					if (event.mouse.button & 1)
 					{
+					
 						wczytajpoziom_on = 0;
 						menu_on = 1;
+					}
+				}
+			if (x > wczytaj_poziom_1_x && x < wczytaj_poziom_1_x+wczytaj_poziom_w && y >wczytaj_poziom_1_y && y < wczytaj_poziom_1_y+ wczytaj_poziom_h)//.......................poziom1
+				if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+				{
+					if (event.mouse.button & 1)
+					{
+						wczytajpoziom_on = 0;
+						nowagra1_1_on = 1;
+					}
+				}
+			if (x > wczytaj_poziom_2_x && x < wczytaj_poziom_2_x + wczytaj_poziom_w && y >wczytaj_poziom_2_y && y < wczytaj_poziom_2_y + wczytaj_poziom_h)//.......................poziom2
+				if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+				{
+					if (event.mouse.button & 1)
+					{
+						wczytajpoziom_on = 0;
+						nowagra1_2_on = 1;
+
+					}
+				}
+			if (x > wczytaj_poziom_3_x && x < wczytaj_poziom_3_x + wczytaj_poziom_w && y >wczytaj_poziom_3_y && y < wczytaj_poziom_3_y + wczytaj_poziom_h)//.........................poziom3
+				if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+				{
+					if (event.mouse.button & 1)
+					{
+						wczytajpoziom_on = 0;
+						nowagra1_3_on = 1;
+					}
+				}
+			if (x > wczytaj_poziom_4_x && x < wczytaj_poziom_4_x + wczytaj_poziom_w && y >wczytaj_poziom_4_y && y < wczytaj_poziom_4_y + wczytaj_poziom_h)//.........................poziom4
+				if (event.type == ALLEGRO_EVENT_MOUSE_BUTTON_DOWN)
+				{
+					if (event.mouse.button & 1)
+					{
+						wczytajpoziom_on = 0;
+						nowagra1_4_on = 1;
 					}
 				}
 		}
@@ -965,6 +1353,12 @@ int main()
 	al_destroy_bitmap(wyjscieakt);
 	al_destroy_bitmap(wczytajpoziom);
 	al_destroy_bitmap(autorzy);
+
+	al_destroy_bitmap(poczatek_1);
+	al_destroy_bitmap(poczatek_2);
+	al_destroy_bitmap(poczatek_3);
+	al_destroy_bitmap(poczatek_4);
+	al_destroy_bitmap(poczatek_5);
 
 	al_destroy_bitmap(postac1);
 	al_destroy_bitmap(okno1_1);
